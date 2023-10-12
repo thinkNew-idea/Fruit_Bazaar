@@ -52,7 +52,6 @@ const LoginPage = (props) => {
 
     const handleLogin = () => {
         const url = 'https://sgamare32.pythonanywhere.com/api/v1/accounts/login';
-
         axios.post(url, {
             email: email,
             otp: otpdata
