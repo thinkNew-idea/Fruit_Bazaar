@@ -115,3 +115,39 @@ svg {
   top: unset;
   border-top: 1px solid #000;
 }
+.content_box {
+  border: 1px solid #eaeaea;
+  padding: 25px 15px;
+}
+.content_text {
+  text-align: center;
+}
+
+.content_text > .title {
+  font-weight: 400;
+  color: #000;
+  font-size: 18px;
+  position: relative;
+  padding-bottom: 18px;
+  margin-bottom: 22px;
+  font-weight: 500;
+}
+.content_box:hover {
+  border: 1px solid #3d3839;
+}
+.title:after {
+  content: "";
+  height: 1px;
+  width: 42px;
+  border-bottom: 1px solid;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%);
+}
+.text {
+  color: #979797;
+  font-size: 15px;
+  line-height: 28px;
+  font-weight: 400;
+}
