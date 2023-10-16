@@ -160,9 +160,23 @@ svg {
   margin-left: 8px !important;
 }
 .indicators {
-  position: absolute !important;
+  position: relative !important;
   width: 100% !important;
   margin-top: 0px !important;
   z-index: 99 !important;
-  bottom: 6rem !important;
+  bottom: 4rem !important;
+}
+.title_heading {
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 1px;
+  display: flex !important;
+  justify-content: center !important;
+  color: #3d3839;
+  text-transform: none;
+  border: none;
+  border-color: #3d3839;
+  padding-bottom: 2rem;
+  padding-top: 3rem;
 }
