@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import Marquee from 'react-double-marquee';
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
@@ -8,6 +9,7 @@ import Modal from '@mui/material/Modal';
 import LoginPage from './LoginPage';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { useNavigate } from "react-router-dom";
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -34,6 +36,7 @@ const Header = () => {
     }
     return (
         <>
+
             <div className='flex flex-row justify-between bg-[#fff] text-[#4a4844] border-solid border-b' id='header'>
                 <div className='font-[500]  w-[13rem] cursor-pointer' onClick={handleClickHome}>
 
