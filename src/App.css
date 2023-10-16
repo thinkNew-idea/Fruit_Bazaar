@@ -151,3 +151,18 @@ svg {
   line-height: 28px;
   font-weight: 400;
 }
+.react-slideshow-container + ul.indicators .each-slideshow-indicator:before {
+  width: 13px !important;
+  height: 13px !important;
+  background: #3d3839 !important;
+}
+.react-slideshow-container + ul.indicators li {
+  margin-left: 8px !important;
+}
+.indicators {
+  position: absolute !important;
+  width: 100% !important;
+  margin-top: 0px !important;
+  z-index: 99 !important;
+  bottom: 6rem !important;
+}

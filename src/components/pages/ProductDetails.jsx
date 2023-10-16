@@ -80,17 +80,18 @@ const ProductDetails = () => {
                             <div className='text-[15px] text-[#a8a8a8] font-[400] leading-[28px]  pt-[22px]'>
                                 <p>{product_details.product_desc}</p>
                             </div>
-                            <div className='flex flex-row text-[16px] text-[#3d3839] items-center gap-4 my-5'>
-                                <span className='font-[500] border-b-2'>SIZE</span>
-                                <ul className='flex gap-2 font-[500]'>
-                                    <li className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={1}>1KG</li>
-                                    <li className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={2}>2KG</li>
-                                    <li className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={3}>3KG</li>
-                                </ul>
-                            </div>
+
                         </div>
                         <div>
                             <div className='flex flex-col'>
+                                <div className='flex flex-row text-[16px] text-[#3d3839] items-center gap-4 my-5'>
+                                    <span className='font-[500] border-b-2'>SIZE</span>
+                                    <ul className='flex gap-2 font-[500]'>
+                                        <li className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={1}>1KG</li>
+                                        <li className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={2}>2KG</li>
+                                        <li className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={3}>3KG</li>
+                                    </ul>
+                                </div>
                                 <div className='flex gap-4 w-full'>
                                     <div className='flex border border-[2px] border-[#3d3839] w-[90px] relative'>
                                         <input className='qtyvalue' type='text' onChange={handleqtyValue} value={currentQtyValue} />
