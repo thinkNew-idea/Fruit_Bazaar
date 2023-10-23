@@ -42,7 +42,7 @@ const Home = () => {
     }
     React.useEffect(() => {
 
-        axios.get('https://sgamare32.pythonanywhere.com/api/v1/products/product-list?products=6')
+        axios.get('https://sgamare32.pythonanywhere.com/api/v1/products/product-list?products=5')
             .then(response => {
                 const productList = response.data.results.product_list;
                 setProducts(productList);
