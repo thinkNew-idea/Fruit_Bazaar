@@ -33,7 +33,7 @@ const ProductDetails = () => {
     const handleqtyValue = (event) => {
         if (event.target.value === 0) {
             alert("not type 0 or less then 0");
-        }else if(event?.target?.value?.length<=1){
+        } else if (event?.target?.value?.length <= 1) {
             setCurrentQtyValue(1);
         }
         else {
@@ -64,10 +64,10 @@ const ProductDetails = () => {
             <div className='flex flex-row w-full  gap-5  py-[2rem] px-[2rem]'>
                 <div className='w-[35%]'>
 
-                    <div className='border border-solid border-[#ececec] min-h-[100%] flex justify-between'><img className='w-full' src={product_details.product_image} style={{objectFit:"contain"}} /></div>
+                    <div className='border border-solid border-[#ececec] min-h-[100%] flex justify-between'><img className='w-full' src={product_details.product_image} style={{ objectFit: "contain" }} /></div>
                 </div>
                 <div className='w-[65%] gap-5 flex flex-row'>
-                    <div className='w-[50%] flex flex-col justify-between'>
+                    <div className='w-[60%] flex flex-col justify-between'>
                         <div>
                             <div className='flex flex-row justify-between items-center pb-2'>
                                 <h3 class="text-[24px] font-[500] text-[#3d3839]">{product_details.product_name} </h3>
@@ -89,7 +89,7 @@ const ProductDetails = () => {
                                 <div className='flex flex-row text-[16px] text-[#3d3839] items-center gap-4 my-5'>
                                     <span className='font-[500] border-b-2'>SIZE</span>
                                     <ul className='flex gap-2 font-[500]'>
-                                    {['1KG','2KG','3KG'].map((e)=><li className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={1}>{e}</li>)}
+                                        {['1KG', '2KG', '3KG'].map((e, i) => <li className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={e}>{e}</li>)}
                                     </ul>
                                 </div>
                                 <div className='flex gap-4 w-full'>
@@ -142,7 +142,7 @@ const ProductDetails = () => {
                         </div>
 
                     </div>
-                    <div className='w-[50%]'>
+                    <div className='w-[40%]'>
                         <div className='flex flex-col gap-5'>
                             <div className='content_box'>
                                 <div className='content_text'>
