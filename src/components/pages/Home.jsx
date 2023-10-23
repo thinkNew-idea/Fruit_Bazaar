@@ -76,7 +76,7 @@ const Home = () => {
                     >
                         {fadeImages.map((fadeImage, index) => (
                             <div className='relative h-[800px]' key={index}>
-                                <img style={{ width: '100%' }} src={fadeImage.url} />
+                                <img style={{ width: '100%' }} src={fadeImage.url} draggable={false} />
                                 <div className='absolute top-0 left-[3rem] flex flex-col justify-center w-[50%] h-full'>
                                     <div className='font-[400] text-[#3d3839] text-[98px]'>
                                         {fadeImage.caption}
@@ -102,7 +102,7 @@ const Home = () => {
                                 <div className='md:w-1/3 lg:w-1/5 w-1/1 p-[10px] flex flex-col mb-[30px] cursor-pointer productCard' key={index}>
                                     <div className='w-full border border-solid border-[#ececec] relative insideCard'>
                                         <span className='absolute m-2 text-[12px] text-[#fff] bg-[#ff4949] py-[3px] px-[10px] left-0' >- {(((product.mrp - product.sale_price) / product.mrp) * 100).toFixed(0)} %</span>
-                                        <img className='object-contain' onClick={() => handleViewProductPage(product.product_name, index)} src={product.product_image} alt={product.product_name} />
+                                        <img className='object-contain' onClick={() => handleViewProductPage(product.product_name, index)} src={product.product_image} alt={product.product_name} draggable={false} />
                                         <div className='absolute fadeInUp bottom-[13px] flex flex-row justify-center items-center w-full gap-3 actionbtnCard'>
                                             <Tooltip title="View product" arrow placement="top">
                                                 <span onClick={() => handleViewProductPage(product.product_name, index)} className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>

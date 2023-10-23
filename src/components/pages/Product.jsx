@@ -68,14 +68,10 @@ const Product = () => {
                         <div className={`bg-gary-500 pl-[2rem] py-[2rem] ${filterdivopen}`}>
                             <div className='p-[10px] text-[17px] text-[#3d3839] font-[500]'>Size Options</div>
                             <ul className='flex gap-2 font-[500] pl-[10px]'>
-                                <li className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={1}>1KG</li>
-                                <li className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={2}>2KG</li>
-                                <li className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={3}>3KG</li>
+                                {['1KG','2KG','3KG'].map((e)=><li className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={1}>{e}</li>)}
                             </ul>
                         </div>
-                    ) : (
-                        ""
-                    )
+                    ) : null
                     }
 
 
