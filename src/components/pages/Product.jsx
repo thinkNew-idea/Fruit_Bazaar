@@ -9,7 +9,10 @@ import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded';
 import Skeleton from '@mui/material/Skeleton';
 import Tooltip from '@mui/material/Tooltip';
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../actions/cartActions';
 const Product = () => {
+    const dispatch = useDispatch();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filterDiv, setFilterDiv] = useState(false);
@@ -17,6 +20,11 @@ const Product = () => {
         setFilterDiv(true);
 
     }
+
+    const handleAddToCart = (product) => {
+        dispatch(addToCart(product));
+        console.log('Item added to cart:', product); // Add this line
+    };
     console.log("filterDiv", filterDiv);
     var widthdiv = "w-[100%]"
     var filterdivopen = "";
@@ -68,7 +76,7 @@ const Product = () => {
                         <div className={`bg-gary-500 pl-[2rem] py-[2rem] ${filterdivopen}`}>
                             <div className='p-[10px] text-[17px] text-[#3d3839] font-[500]'>Size Options</div>
                             <ul className='flex gap-2 font-[500] pl-[10px]'>
-                                {['1KG','2KG','3KG'].map((e)=><li className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={1}>{e}</li>)}
+                                {['1KG', '2KG', '3KG'].map((e) => <li className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={1}>{e}</li>)}
                             </ul>
                         </div>
                     ) : null
@@ -99,7 +107,7 @@ const Product = () => {
                                                 </span>
                                             </Tooltip>
                                             <Tooltip title="Add to cart" arrow placement="top">
-                                                <span className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
+                                                <span onClick={() => handleAddToCart(product)} className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
                                                     <AddShoppingCartRoundedIcon className='hover:text-[#fff] !text-[20px]' />
                                                 </span>
                                             </Tooltip>
