@@ -2,8 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 const CartComponent = () => {
-    const cartItems = useSelector(state => state.cart.cartItems);
-    console.log("cartItems", cartItems);
+    const cartItems = useSelector(state =>state.cart.cartItems);
     return (
         <div>
             {cartItems.map((item, index) => (

@@ -21,6 +21,7 @@
     "react-scripts": "5.0.1",
     "react-slideshow-image": "^4.3.0",
     "redux": "^4.2.1",
+    "redux-persist": "^6.0.0",
     "styled-components": "^6.0.8",
     "web-vitals": "^2.1.4"
   },

@@ -9,7 +9,7 @@ import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded';
 import Skeleton from '@mui/material/Skeleton';
 import Tooltip from '@mui/material/Tooltip';
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../actions/cartActions';
 const Product = () => {
     const dispatch = useDispatch();
