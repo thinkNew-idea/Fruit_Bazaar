@@ -7,6 +7,7 @@ import { MuiOtpInput } from 'mui-one-time-password-input'
 import { validEmail } from "./Regex.js";
 import toast, { Toaster } from "react-hot-toast";
 import axios from 'axios';
+import ApiCall from '../../Utils/api.js';
 const LoginPage = (props) => {
     const [email, setEmail] = useState();
     const [otpdata, setOtpdata] = useState();
@@ -20,7 +21,7 @@ const LoginPage = (props) => {
     const handleOTPChange = (newValue) => {
         setOtpdata(newValue);
     };
-    const sendOTP = () => {
+    const sendOTP = async() => {
         if (email === "") {
             setMailAlertMge("Please enter your email");
 
@@ -28,25 +29,14 @@ const LoginPage = (props) => {
 
             setMailAlertMge("Your email is invalid");
         } else {
-            const apiUrl = 'https://sgamare32.pythonanywhere.com/api/v1/accounts/auth';
-            const requestData = {
-                email: email
-            };
-            Axios.post(apiUrl, requestData)
-                .then(response => {
-                    console.log("Data", response.data);
-                    setError(null);
-                    toast.success(response.data.message);
-                    setStatusOtp(response.data.message);
-                })
-                .catch(error => {
-                    console.error(error);
-                    setError(error.message || 'An error occurred');
-                });
+            const response = await ApiCall("post",'sendOtp',{email: email})
+            if(response.status==200){
+                toast.success(response.data.message);
+                setStatusOtp(response.data.message);
+            }else{
+                setError('An error occurred'); 
+            }
         }
-
-
-
     }
 
 
