@@ -31,8 +31,12 @@ const Header = () => {
     const handleClickProduct = () => {
         navigate('/product');
     };
+
     const statusClick = () => {
         setOpen(false);
+    }
+    const handleCartpage = () => {
+        navigate('/cart');
     }
     return (
         <>
@@ -58,7 +62,7 @@ const Header = () => {
                 <div className='flex flex-row items-center gap-[5px] text-[#4a4844]'>
                     <SearchRoundedIcon className='!text-[30px]  mx-[6px] cursor-pointer' />
                     <FavoriteBorderOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' />
-                    <LocalMallOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' />
+                    <LocalMallOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={handleCartpage} />
                     <PermIdentityOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={handleOpen} />
 
                 </div>
