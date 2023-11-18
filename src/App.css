@@ -180,3 +180,33 @@ svg {
   padding-bottom: 2rem;
   padding-top: 3rem;
 }
+table,
+td,
+th {
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  padding: 15px;
+}
+.hederingoftable {
+  border: 1px solid #ddd !important;
+}
+.hederingoftable > th {
+  font-weight: 500 !important;
+  color: #4a4844 !important;
+  font-size: 14px;
+  text-align: center !important;
+  text-transform: uppercase;
+  border: 1px solid #ddd !important;
+}
+.hederingoftable > td {
+  text-align: center !important;
+}
