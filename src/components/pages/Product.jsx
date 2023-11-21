@@ -21,9 +21,10 @@ const Product = () => {
 
     }
 
-    const handleAddToCart = (product) => {
-        dispatch(addToCart(product));
-        console.log('Item added to cart:', product); // Add this line
+    const handleAddToCart = (product, product_quantity_real) => {
+        const product_detail = { product, product_quantity_real }
+        dispatch(addToCart(product_detail));
+        console.log('Item added to cart:', product_detail); // Add this line
     };
     console.log("filterDiv", filterDiv);
     var widthdiv = "w-[100%]"
@@ -107,7 +108,7 @@ const Product = () => {
                                                 </span>
                                             </Tooltip>
                                             <Tooltip title="Add to cart" arrow placement="top">
-                                                <span onClick={() => handleAddToCart(product)} className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
+                                                <span onClick={() => handleAddToCart(product, 1)} className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
                                                     <AddShoppingCartRoundedIcon className='hover:text-[#fff] !text-[20px]' />
                                                 </span>
                                             </Tooltip>

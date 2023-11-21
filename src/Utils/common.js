@@ -1,1 +1,1 @@
-export const BaseUrl='http://localhost:8000/api/';
+export const BaseUrl = 'https://fruitsbazarapis.onrender.com/api/';

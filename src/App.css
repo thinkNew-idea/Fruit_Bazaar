@@ -180,12 +180,12 @@ svg {
   padding-bottom: 2rem;
   padding-top: 3rem;
 }
-table,
+/* table,
 td,
 th {
   border-bottom: 1px solid #ddd;
   text-align: left;
-}
+} */
 
 table {
   border-collapse: collapse;
