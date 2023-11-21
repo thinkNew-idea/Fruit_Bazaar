@@ -6,11 +6,13 @@ import CurrencyRupeeRoundedIcon from '@mui/icons-material/CurrencyRupeeRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import Button from '@mui/material/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../../actions/cartActions';
 const ProductDetails = () => {
     const [pid, setPid] = useState(null);
     const [product_details, setProduct_Details] = useState([]);
     const [currentQtyValue, setCurrentQtyValue] = useState(1);
-
+    const dispatch = useDispatch();
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const pidFromUrl = params.get('variant');
@@ -57,7 +59,17 @@ const ProductDetails = () => {
 
 
     }
-    console.log("currentQtyValue", currentQtyValue);
+    const handleAddToCart = (product_add, product_quantity_real) => {
+
+        const product = {
+            id: product_add.id,
+
+        }
+        console.log('product page', product); // Add this line
+        const product_detail = { product, product_quantity_real }
+        dispatch(addToCart(product_detail));
+
+    };
     return (
         <div className='flex flex-col'>
             <Header />
@@ -114,7 +126,7 @@ const ProductDetails = () => {
                                             }}
                                             size="normal"
                                             variant="contained"
-
+                                            onClick={() => handleAddToCart(product_details, currentQtyValue)}
                                         >
                                             Add to Cart
                                         </Button>

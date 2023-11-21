@@ -1,15 +1,57 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeFromCart } from '../../actions/cartActions';
+import {
+    updateCartItemQuantity,
+    increaseCartItemQuantity,
+    decreaseCartItemQuantity,
+} from '../../actions/cartActions';
 import Header from '../layout/Header';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
+
 const CartComponent = () => {
+    const [currentQtyValue, setCurrentQtyValue] = React.useState(1);
     const cartItems = useSelector(state => state.cart.cartItems);
     const dispatch = useDispatch();
-
-
+    console.log("cartcome from product", cartItems);
     const handleDelete = (index) => {
         dispatch(removeFromCart(index));
     };
+
+    const handleqtyValue = (event, index) => {
+        const inputValue = parseInt(event.target.value);
+
+        if (!isNaN(inputValue) && inputValue > 0) {
+            // Update the Redux state with the new quantity
+            dispatch(updateCartItemQuantity(index, inputValue));
+        } else {
+            // If the input is not a valid number or less than or equal to 0,
+            // you might want to set a default value or handle it accordingly.
+            // For now, setting it to 1.
+            dispatch(updateCartItemQuantity(index, 1));
+        }
+    };
+    const handlePlus = (index) => {
+        dispatch(increaseCartItemQuantity(index));
+    };
+
+    const handleMinus = (index) => {
+        dispatch(decreaseCartItemQuantity(index));
+    };
+
+
+    const calculateTotal = (item) => {
+        // Assuming item.product_quantity_real and item.product.sale_price are numeric values
+        return (item.product_quantity_real || 0) * parseFloat(item.product.mrp);
+    };
+    const calculateCartTotal = () => {
+        return cartItems.reduce((total, item) => {
+            const itemTotal = (item.product_quantity_real || 0) * parseFloat(item.product.mrp);
+            return total + itemTotal;
+        }, 0);
+    };
+
     return (
         <div className='flex flex-col'>
             <Header />
@@ -20,24 +62,49 @@ const CartComponent = () => {
                             <th>Product Name</th>
                             <th>Price</th>
                             <th>Quantity</th>
-
                             <th>Total</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {cartItems.map((item, index) => (
-                            <tr key={index} className='hederingoftable'>
-                                <td className='flex'>{item.product_img}{item.product_name}</td>
-                                <td>{item.mrp}</td>
-                                <td>{item.size}</td>
 
+                            <tr key={index} className='hederingoftable'>
+                                <td className='flex items-center font-[500] gap-3'>
+                                    <img src={item.product.product_image} alt={item.product.product_name} className='product-image w-[135px] border border-solid border-[#ececec]' />
+                                    {item.product.product_name}
+                                </td>
+                                <td>{item.product.mrp}</td>
+                                <td className='w-[119px]'>
+                                    <div className='flex border border-[2px] border-[#3d3839] w-[90px] relative'>
+                                        <input
+                                            className='qtyvalue'
+                                            type='text'
+                                            onChange={(e) => handleqtyValue(e, index)}
+                                            value={item.product_quantity_real ?? ''}
+                                        />
+                                        <div className='flex flex-col'>
+                                            <button className='qty_plus' onClick={() => handlePlus(index)}>
+                                                <span><AddRoundedIcon /></span>
+                                            </button>
+                                            <button className='qty_minus' onClick={() => handleMinus(index)}>
+                                                <span><RemoveRoundedIcon /></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{calculateTotal(item)}</td>
                                 <td>
                                     <button onClick={() => handleDelete(index)}>Delete</button>
                                 </td>
                             </tr>
                         ))}
+
                     </tbody>
                 </table>
+                <div className="total-section">
+                    <p>Total: {calculateCartTotal()}</p>
+                </div>
             </div>
         </div>
     );
