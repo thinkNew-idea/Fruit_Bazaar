@@ -59,17 +59,21 @@ const ProductDetails = () => {
 
 
     }
+
     const handleAddToCart = (product_add, product_quantity_real) => {
 
         const product = {
             id: product_add.id,
-
+            product_image: product_add.product_image,
+            product_name: product_add.product_name,
+            size: product_add.size,
+            mrp: product_add.mrp
         }
-        console.log('product page', product); // Add this line
         const product_detail = { product, product_quantity_real }
         dispatch(addToCart(product_detail));
 
     };
+    console.log("currentQtyValue", currentQtyValue);
     return (
         <div className='flex flex-col'>
             <Header />

@@ -11,10 +11,8 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 
 const CartComponent = () => {
-    const [currentQtyValue, setCurrentQtyValue] = React.useState(1);
     const cartItems = useSelector(state => state.cart.cartItems);
     const dispatch = useDispatch();
-    console.log("cartcome from product", cartItems);
     const handleDelete = (index) => {
         dispatch(removeFromCart(index));
     };
@@ -23,12 +21,9 @@ const CartComponent = () => {
         const inputValue = parseInt(event.target.value);
 
         if (!isNaN(inputValue) && inputValue > 0) {
-            // Update the Redux state with the new quantity
             dispatch(updateCartItemQuantity(index, inputValue));
         } else {
-            // If the input is not a valid number or less than or equal to 0,
-            // you might want to set a default value or handle it accordingly.
-            // For now, setting it to 1.
+
             dispatch(updateCartItemQuantity(index, 1));
         }
     };
@@ -42,7 +37,6 @@ const CartComponent = () => {
 
 
     const calculateTotal = (item) => {
-        // Assuming item.product_quantity_real and item.product.sale_price are numeric values
         return (item.product_quantity_real || 0) * parseFloat(item.product.mrp);
     };
     const calculateCartTotal = () => {

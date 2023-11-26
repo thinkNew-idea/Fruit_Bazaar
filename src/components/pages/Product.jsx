@@ -24,15 +24,14 @@ const Product = () => {
     const handleAddToCart = (product, product_quantity_real) => {
         const product_detail = { product, product_quantity_real }
         dispatch(addToCart(product_detail));
-        console.log('Item added to cart:', product_detail); // Add this line
     };
     console.log("filterDiv", filterDiv);
     var widthdiv = "w-[100%]"
     var filterdivopen = "";
     useEffect(() => {
-        axios.get('https://sgamare32.pythonanywhere.com/api/v1/products/product-list?products=800')
+        axios.get('https://fruitsbazarapis.onrender.com/api/getProducts')
             .then(response => {
-                const productList = response.data.results.product_list;
+                const productList = response.data.data;
                 setProducts(productList);
                 setLoading(false);
             })
@@ -46,7 +45,7 @@ const Product = () => {
     const navigate = useNavigate();
     const handleViewProductPage = (pname, pid) => {
         if (pid != null) {
-            navigate(`/productdetails?name=${pname}&variant=${pid + 1}`);
+            navigate(`/productdetails?name=${pname}&variant=${pid}`);
         } else {
             alert("Product id not get")
         }
@@ -97,13 +96,13 @@ const Product = () => {
                             ))
                         ) : (
                             products.map((product, index) => (
-                                <div className='md:w-1/3 lg:w-1/5 w-1/1 p-[10px] flex flex-col mb-[30px] cursor-pointer productCard' key={index}>
+                                <div className='md:w-1/3 lg:w-1/5 w-1/1 p-[10px] flex flex-col mb-[30px] cursor-pointer productCard' key={product._id}>
                                     <div className='w-full border border-solid border-[#ececec] relative insideCard'>
-                                        <span className='absolute m-2 text-[12px] text-[#fff] bg-[#ff4949] py-[3px] px-[10px] left-0' >- {(((product.mrp - product.sale_price) / product.mrp) * 100).toFixed(0)} %</span>
-                                        <img className='object-contain' onClick={() => handleViewProductPage(product.product_name, index)} src={product.product_image} alt={product.product_name} />
+                                        {/* <span className='absolute m-2 text-[12px] text-[#fff] bg-[#ff4949] py-[3px] px-[10px] left-0' >- {(((product.mrp - product.sale_price) / product.mrp) * 100).toFixed(0)} %</span> */}
+                                        <img className='object-contain' onClick={() => handleViewProductPage(product.title, product._id)} src={product.photos} alt={product.title} />
                                         <div className='absolute fadeInUp bottom-[13px] flex flex-row justify-center items-center w-full gap-3 actionbtnCard'>
                                             <Tooltip title="View product" arrow placement="top">
-                                                <span onClick={() => handleViewProductPage(product.product_name, index)} className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
+                                                <span onClick={() => handleViewProductPage(product.title, product._id)} className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
                                                     <RemoveRedEyeRoundedIcon className='hover:text-[#fff] !text-[20px]' />
                                                 </span>
                                             </Tooltip>
@@ -119,10 +118,10 @@ const Product = () => {
                                             </Tooltip>
                                         </div>
                                     </div>
-                                    <h4 onClick={() => handleViewProductPage(product.product_name, index)} className="des-font hover:text-[#0bc217]">
-                                        {product.product_name}
+                                    <h4 onClick={() => handleViewProductPage(product.title, product._id)} className="des-font hover:text-[#0bc217]">
+                                        {product.title}
                                     </h4>
-                                    <p onClick={() => handleViewProductPage(product.product_name, index)} className='price'><CurrencyRupeeRoundedIcon className="custom-icon" />{product.mrp}</p>
+                                    <p onClick={() => handleViewProductPage(product.title, product._id)} className='price'><CurrencyRupeeRoundedIcon className="custom-icon" />{product.price}</p>
                                 </div>
                             ))
                         )}
