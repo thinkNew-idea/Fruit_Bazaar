@@ -11,10 +11,8 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 
 const CartComponent = () => {
-    const [currentQtyValue, setCurrentQtyValue] = React.useState(1);
     const cartItems = useSelector(state => state.cart.cartItems);
     const dispatch = useDispatch();
-    console.log("cartcome from product", cartItems);
     const handleDelete = (index) => {
         dispatch(removeFromCart(index));
     };
@@ -23,12 +21,9 @@ const CartComponent = () => {
         const inputValue = parseInt(event.target.value);
 
         if (!isNaN(inputValue) && inputValue > 0) {
-            // Update the Redux state with the new quantity
             dispatch(updateCartItemQuantity(index, inputValue));
         } else {
-            // If the input is not a valid number or less than or equal to 0,
-            // you might want to set a default value or handle it accordingly.
-            // For now, setting it to 1.
+
             dispatch(updateCartItemQuantity(index, 1));
         }
     };
@@ -42,12 +37,11 @@ const CartComponent = () => {
 
 
     const calculateTotal = (item) => {
-        // Assuming item.product_quantity_real and item.product.sale_price are numeric values
-        return (item.product_quantity_real || 0) * parseFloat(item.product.mrp);
+        return (item.product_quantity_real || 0) * parseFloat(item.product.price);
     };
     const calculateCartTotal = () => {
         return cartItems.reduce((total, item) => {
-            const itemTotal = (item.product_quantity_real || 0) * parseFloat(item.product.mrp);
+            const itemTotal = (item.product_quantity_real || 0) * parseFloat(item.product.price);
             return total + itemTotal;
         }, 0);
     };
@@ -71,10 +65,10 @@ const CartComponent = () => {
 
                             <tr key={index} className='hederingoftable'>
                                 <td className='flex items-center font-[500] gap-3'>
-                                    <img src={item.product.product_image} alt={item.product.product_name} className='product-image w-[135px] border border-solid border-[#ececec]' />
-                                    {item.product.product_name}
+                                    <img src={item.product.photos} alt={item.product.title} className='product-image w-[135px] border border-solid border-[#ececec]' />
+                                    {item.product.title}
                                 </td>
-                                <td>{item.product.mrp}</td>
+                                <td>{item.product.price}</td>
                                 <td className='w-[119px]'>
                                     <div className='flex border border-[2px] border-[#3d3839] w-[90px] relative'>
                                         <input

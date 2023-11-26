@@ -5,10 +5,31 @@ const initialState = {
 const cartReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_TO_CART:
-            return {
-                ...state,
-                cartItems: [...state.cartItems, action.payload],
-            };
+            // Check if the product is already in the cart
+            const existingProductIndex = state.cartItems.findIndex(item => item.product._id === action.payload.product._id);
+            if (existingProductIndex !== -1) {
+                // If the product is already in the cart, update its quantity
+                const updatedCartItems = state.cartItems.map((item, index) => {
+                    if (index === existingProductIndex) {
+                        return {
+                            ...item,
+                            product_quantity_real: item.product_quantity_real + action.payload.product_quantity_real,
+                        };
+                    }
+                    return item;
+                });
+
+                return {
+                    ...state,
+                    cartItems: updatedCartItems,
+                };
+            } else {
+                // If the product is not in the cart, add it
+                return {
+                    ...state,
+                    cartItems: [...state.cartItems, action.payload],
+                };
+            }
         case REMOVE_FROM_CART:
             return {
                 ...state,

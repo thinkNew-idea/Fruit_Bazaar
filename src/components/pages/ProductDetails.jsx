@@ -21,9 +21,9 @@ const ProductDetails = () => {
             setPid(pidFromUrl);
         }
         if (pid != null) {
-            axios.get(`https://sgamare32.pythonanywhere.com//api/v1/products/product-detail?id=${pid}`)
+            axios.get(`https://fruitsbazarapis.onrender.com/api/getProducts/${pid}`)
                 .then(response => {
-                    const product_details = response.data.product_details
+                    const product_details = response.data.data
                     setProduct_Details(product_details)
                 })
                 .catch(error => {
@@ -59,40 +59,44 @@ const ProductDetails = () => {
 
 
     }
+
     const handleAddToCart = (product_add, product_quantity_real) => {
 
         const product = {
             id: product_add.id,
-
+            product_image: product_add.product_image,
+            product_name: product_add.product_name,
+            size: product_add.size,
+            mrp: product_add.mrp
         }
-        console.log('product page', product); // Add this line
         const product_detail = { product, product_quantity_real }
         dispatch(addToCart(product_detail));
 
     };
+    console.log("currentQtyValue", currentQtyValue);
     return (
         <div className='flex flex-col'>
             <Header />
             <div className='flex flex-row w-full  gap-5  py-[2rem] px-[2rem]'>
                 <div className='w-[35%]'>
 
-                    <div className='border border-solid border-[#ececec] min-h-[100%] flex justify-between'><img className='w-full' src={product_details.product_image} style={{ objectFit: "contain" }} /></div>
+                    <div className='border border-solid border-[#ececec] min-h-[100%] flex justify-between'><img className='w-full' src={product_details.photos} style={{ objectFit: "contain" }} /></div>
                 </div>
                 <div className='w-[65%] gap-5 flex flex-row'>
                     <div className='w-[60%] flex flex-col justify-between'>
                         <div>
                             <div className='flex flex-row justify-between items-center pb-2'>
-                                <h3 class="text-[24px] font-[500] text-[#3d3839]">{product_details.product_name} </h3>
+                                <h3 class="text-[24px] font-[500] text-[#3d3839]">{product_details.title} </h3>
                                 <span className='bg-[#fff] border border-solid border-[#e9e9e9]  rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
                                     <FavoriteBorderRoundedIcon className='hover:text-[#fff] !text-[20px]' />
                                 </span>
                             </div>
                             <div className='border-b border-[#e7e7e7] pb-[24px]'>
-                                <p className='pricePdtail !text-start !text-[20px] font-[500]'><CurrencyRupeeRoundedIcon className="mb-3px] !text-[20px]" />{product_details.mrp}</p>
+                                <p className='pricePdtail !text-start !text-[20px] font-[500]'><CurrencyRupeeRoundedIcon className="mb-3px] !text-[20px]" />{product_details.price}</p>
 
                             </div>
                             <div className='text-[15px] text-[#a8a8a8] font-[400] leading-[28px]  pt-[22px]'>
-                                <p>{product_details.product_desc}</p>
+                                <p>{product_details.description}</p>
                             </div>
 
                         </div>
