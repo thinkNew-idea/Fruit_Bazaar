@@ -37,11 +37,11 @@ const CartComponent = () => {
 
 
     const calculateTotal = (item) => {
-        return (item.product_quantity_real || 0) * parseFloat(item.product.mrp);
+        return (item.product_quantity_real || 0) * parseFloat(item.product.price);
     };
     const calculateCartTotal = () => {
         return cartItems.reduce((total, item) => {
-            const itemTotal = (item.product_quantity_real || 0) * parseFloat(item.product.mrp);
+            const itemTotal = (item.product_quantity_real || 0) * parseFloat(item.product.price);
             return total + itemTotal;
         }, 0);
     };
@@ -65,10 +65,10 @@ const CartComponent = () => {
 
                             <tr key={index} className='hederingoftable'>
                                 <td className='flex items-center font-[500] gap-3'>
-                                    <img src={item.product.product_image} alt={item.product.product_name} className='product-image w-[135px] border border-solid border-[#ececec]' />
-                                    {item.product.product_name}
+                                    <img src={item.product.photos} alt={item.product.title} className='product-image w-[135px] border border-solid border-[#ececec]' />
+                                    {item.product.title}
                                 </td>
-                                <td>{item.product.mrp}</td>
+                                <td>{item.product.price}</td>
                                 <td className='w-[119px]'>
                                     <div className='flex border border-[2px] border-[#3d3839] w-[90px] relative'>
                                         <input

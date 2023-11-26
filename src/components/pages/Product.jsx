@@ -23,6 +23,7 @@ const Product = () => {
 
     const handleAddToCart = (product, product_quantity_real) => {
         const product_detail = { product, product_quantity_real }
+        console.log(product_detail);
         dispatch(addToCart(product_detail));
     };
     console.log("filterDiv", filterDiv);
@@ -96,7 +97,7 @@ const Product = () => {
                             ))
                         ) : (
                             products.map((product, index) => (
-                                <div className='md:w-1/3 lg:w-1/5 w-1/1 p-[10px] flex flex-col mb-[30px] cursor-pointer productCard' key={product._id}>
+                                <div className='md:w-1/3 lg:w-1/5 w-1/1 p-[10px] flex flex-col mb-[30px] cursor-pointer productCard' key={index}>
                                     <div className='w-full border border-solid border-[#ececec] relative insideCard'>
                                         {/* <span className='absolute m-2 text-[12px] text-[#fff] bg-[#ff4949] py-[3px] px-[10px] left-0' >- {(((product.mrp - product.sale_price) / product.mrp) * 100).toFixed(0)} %</span> */}
                                         <img className='object-contain' onClick={() => handleViewProductPage(product.title, product._id)} src={product.photos} alt={product.title} />

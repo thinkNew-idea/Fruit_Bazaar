@@ -6,8 +6,7 @@ const cartReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_TO_CART:
             // Check if the product is already in the cart
-            const existingProductIndex = state.cartItems.findIndex(item => item.product.id === action.payload.product.id);
-
+            const existingProductIndex = state.cartItems.findIndex(item => item.product._id === action.payload.product._id);
             if (existingProductIndex !== -1) {
                 // If the product is already in the cart, update its quantity
                 const updatedCartItems = state.cartItems.map((item, index) => {
