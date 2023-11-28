@@ -1,4 +1,5 @@
 import { ADD_TO_CART, REMOVE_FROM_CART, UPDATE_CART_ITEM_QUANTITY, INCREASE_CART_ITEM_QUANTITY, DECREASE_CART_ITEM_QUANTITY } from '../actions/actionTypes';
+import toast, { Toaster } from 'react-hot-toast';
 const initialState = {
     cartItems: [],
 };
@@ -6,25 +7,17 @@ const cartReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_TO_CART:
             // Check if the product is already in the cart
-            const existingProductIndex = state.cartItems.findIndex(item => item.product._id === action.payload.product._id);
+            const existingProductIndex = state.cartItems.findIndex(
+                item => item.product._id === action.payload.product._id
+            );
             if (existingProductIndex !== -1) {
-                // If the product is already in the cart, update its quantity
-                const updatedCartItems = state.cartItems.map((item, index) => {
-                    if (index === existingProductIndex) {
-                        return {
-                            ...item,
-                            product_quantity_real: item.product_quantity_real + action.payload.product_quantity_real,
-                        };
-                    }
-                    return item;
-                });
-
-                return {
-                    ...state,
-                    cartItems: updatedCartItems,
-                };
+                // If the product is already in the cart, show an alert
+                toast.error('You already added this item to your cart');
+                return state; // Return the current state without modifying it
             } else {
                 // If the product is not in the cart, add it
+                toast.success('Your item was added to the cart successfully');
+
                 return {
                     ...state,
                     cartItems: [...state.cartItems, action.payload],

@@ -8,11 +8,15 @@ import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../actions/cartActions';
+import { useNavigate } from 'react-router-dom';
 const ProductDetails = () => {
     const [pid, setPid] = useState(null);
     const [product_details, setProduct_Details] = useState([]);
     const [currentQtyValue, setCurrentQtyValue] = useState(1);
     const dispatch = useDispatch();
+    const cart = useSelector((state) => state.cart.cartItems);
+    const isProductInCart = Array.isArray(cart) && cart.find((item) => item.product._id === product_details._id);
+    const navigate = useNavigate();
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const pidFromUrl = params.get('variant');
@@ -59,21 +63,25 @@ const ProductDetails = () => {
 
 
     }
-
     const handleAddToCart = (product_add, product_quantity_real) => {
-
         const product = {
-            id: product_add.id,
-            product_image: product_add.product_image,
-            product_name: product_add.product_name,
-            size: product_add.size,
-            mrp: product_add.mrp
+            _id: product_add._id,
+            title: product_add.title,
+            description: product_add.description,
+            productCount: product_add.productCount,
+            photos: product_add.photos,
+            price: product_add.price,
+            inStock: product_add.inStock,
+            createdAt: product_add.createdAt,
+            __v: product_add.__v
         }
         const product_detail = { product, product_quantity_real }
-        dispatch(addToCart(product_detail));
+        if (isProductInCart) {
+        } else {
+            dispatch(addToCart(product_detail));
+        }
 
     };
-    console.log("currentQtyValue", currentQtyValue);
     return (
         <div className='flex flex-col'>
             <Header />
@@ -118,22 +126,41 @@ const ProductDetails = () => {
 
                                     </div>
                                     <div className='w-[calc(100%-90px)]'>
-                                        <Button
-                                            style={{
-                                                width: '100%',
-                                                padding: '13px 4rem',
-                                                fontSize: '16px',
-                                                fontWeight: 600,
-                                                backgroundColor: '#0bc217',
-                                                borderRadius: 0,
+                                        {isProductInCart ? (
+                                            <Button
+                                                style={{
+                                                    width: '100%',
+                                                    padding: '13px 4rem',
+                                                    fontSize: '16px',
+                                                    fontWeight: 600,
+                                                    backgroundColor: '#0bc217',
+                                                    borderRadius: 0,
 
-                                            }}
-                                            size="normal"
-                                            variant="contained"
-                                            onClick={() => handleAddToCart(product_details, currentQtyValue)}
-                                        >
-                                            Add to Cart
-                                        </Button>
+                                                }}
+                                                size="normal"
+                                                variant="contained"
+                                                onClick={() => navigate('/cart')}
+                                            >
+                                                Go to Cart
+                                            </Button>
+                                        ) :
+                                            (<Button
+                                                style={{
+                                                    width: '100%',
+                                                    padding: '13px 4rem',
+                                                    fontSize: '16px',
+                                                    fontWeight: 600,
+                                                    backgroundColor: '#0bc217',
+                                                    borderRadius: 0,
+
+                                                }}
+                                                size="normal"
+                                                variant="contained"
+                                                onClick={() => handleAddToCart(product_details, currentQtyValue)}
+                                            >
+                                                Add to Cart
+                                            </Button>
+                                            )}
                                     </div>
                                 </div>
                                 <div className='mt-4'>

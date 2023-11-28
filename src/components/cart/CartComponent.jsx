@@ -9,6 +9,7 @@ import {
 import Header from '../layout/Header';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
+import { Button } from '@mui/material';
 
 const CartComponent = () => {
     const cartItems = useSelector(state => state.cart.cartItems);
@@ -96,8 +97,33 @@ const CartComponent = () => {
 
                     </tbody>
                 </table>
-                <div className="total-section">
-                    <p>Total: {calculateCartTotal()}</p>
+                <div className="total-section hederingoftable mt-5 p-[41px]">
+                    <div>
+                        <h2 className="font-[600] productTotal">PRODUCT TOTALS</h2>
+                        <div className=' pt-[20px]  pb-[40px] flex flex-row justify-between'>
+                            <p className="font-[600]">Total: </p>
+                            <p className="font-[600]">Rs. {calculateCartTotal()}</p>
+
+                        </div>
+                        <div className='flex justify-end'><Button
+
+                            style={{
+                                width: 'auto',
+                                padding: '13px 4rem',
+                                fontSize: '16px',
+                                fontWeight: 600,
+                                backgroundColor: '#0bc217',
+                                borderRadius: 0,
+
+                            }}
+                            size="normal"
+                            variant="contained"
+
+                        >
+                            Proceed to checkout
+                        </Button></div>
+                    </div>
+
                 </div>
             </div>
         </div>
