@@ -10,18 +10,23 @@ import axios from 'axios';
 import ApiCall from '../../Utils/api.js';
 const LoginPage = (props) => {
     const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
     const [otpdata, setOtpdata] = useState();
     const [error, setError] = useState(null);
     const [statusOtp, setStatusOtp] = useState();
+    console.log("statusOtp", statusOtp);
     const [MailAlertMge, setMailAlertMge] = React.useState("");
     const [loginSuccess, setloginSuccess] = useState();
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
     };
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value);
+    };
     const handleOTPChange = (newValue) => {
         setOtpdata(newValue);
     };
-    const sendOTP = async() => {
+    const sendOTP = async () => {
         if (email === "") {
             setMailAlertMge("Please enter your email");
 
@@ -29,12 +34,12 @@ const LoginPage = (props) => {
 
             setMailAlertMge("Your email is invalid");
         } else {
-            const response = await ApiCall("post",'sendOtp',{email: email})
-            if(response.status==200){
+            const response = await ApiCall("post", 'sendOtp', { email: email })
+            if (response.status == 200) {
                 toast.success(response.data.message);
                 setStatusOtp(response.data.message);
-            }else{
-                setError('An error occurred'); 
+            } else {
+                setError('An error occurred');
             }
         }
     }
@@ -67,10 +72,10 @@ const LoginPage = (props) => {
                 </div>
             </div>
             <div className='text-center font-[500] text-[#4a4844] text-[17px] pt-3 pb-3'>It's wonderful to have you back!</div>
-            {statusOtp == 'OTP sent' ? (
+            {statusOtp == 'OTP sent successfuly' ? (
                 <>
                     <MuiOtpInput
-                        length={4}
+                        length={6}
                         value={otpdata}
                         onChange={handleOTPChange}
                         className='py-3'
@@ -91,8 +96,34 @@ const LoginPage = (props) => {
                         variant="contained"
                         onClick={handleLogin}
                     >
-                        LOGIN
+                        Otp Submit
                     </Button>
+                    <TextField
+                        fullWidth
+                        id="outlined-multiline-flexible"
+                        label="Email adress"
+                        size="normal"
+                        margin="dense"
+                        type='email'
+                        variant="outlined"
+                        InputLabelProps={{ required: true }}
+                        style={{ borderRadius: 0 }}
+                        value={email}
+                        onChange={handleEmailChange}
+                    />
+                    <TextField
+                        fullWidth
+                        id="outlined-multiline-flexible"
+                        label="Password"
+                        size="normal"
+                        margin="dense"
+                        type='password'
+                        variant="outlined"
+                        InputLabelProps={{ required: true }}
+                        style={{ borderRadius: 0 }}
+                        value={password}
+                        onChange={handlePasswordChange}
+                    />
                 </>
             ) : (
                 <>

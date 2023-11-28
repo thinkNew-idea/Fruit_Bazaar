@@ -23,7 +23,6 @@ const Product = () => {
 
     const handleAddToCart = (product, product_quantity_real) => {
         const product_detail = { product, product_quantity_real }
-        console.log(product_detail);
         dispatch(addToCart(product_detail));
     };
     console.log("filterDiv", filterDiv);
