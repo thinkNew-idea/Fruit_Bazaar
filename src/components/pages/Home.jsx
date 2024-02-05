@@ -8,8 +8,7 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import CurrencyRupeeRoundedIcon from '@mui/icons-material/CurrencyRupeeRounded';
 import AddShoppingCartRoundedIcon from '@mui/icons-material/AddShoppingCartRounded';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../../actions/cartActions';
+import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded';
 import Skeleton from '@mui/material/Skeleton';
 import Tooltip from '@mui/material/Tooltip';
 
@@ -38,15 +37,14 @@ const fadeImages = [
 const Home = () => {
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const handleShowNow = () => {
         navigate(`/product`);
     }
     React.useEffect(() => {
 
-        axios.get('https://fruitsbazarapis.onrender.com/api/getProducts')
+        axios.get('https://sgamare32.pythonanywhere.com/api/v1/products/product-list?products=5')
             .then(response => {
-                const productList = response.data.data;
+                const productList = response.data.results.product_list;
                 setProducts(productList);
 
             })
@@ -64,10 +62,7 @@ const Home = () => {
             alert("Product id not get")
         }
     }
-    const handleAddToCart = (product, product_quantity_real) => {
-        const product_detail = { product, product_quantity_real }
-        dispatch(addToCart(product_detail));
-    };
+
     return (
         <>
             <div className='flex flex-col'>
@@ -106,16 +101,16 @@ const Home = () => {
                             products.map((product, index) => (
                                 <div className='md:w-1/3 lg:w-1/5 w-1/1 p-[10px] flex flex-col mb-[30px] cursor-pointer productCard' key={index}>
                                     <div className='w-full border border-solid border-[#ececec] relative insideCard'>
-                                        {/* <span className='absolute m-2 text-[12px] text-[#fff] bg-[#ff4949] py-[3px] px-[10px] left-0' >- {(((product.mrp - product.sale_price) / product.mrp) * 100).toFixed(0)} %</span> */}
-                                        <img className='object-contain' onClick={() => handleViewProductPage(product.title, product._id)} src={product.photos} alt={product.title} />
+                                        <span className='absolute m-2 text-[12px] text-[#fff] bg-[#ff4949] py-[3px] px-[10px] left-0' >- {(((product.mrp - product.sale_price) / product.mrp) * 100).toFixed(0)} %</span>
+                                        <img className='object-contain' onClick={() => handleViewProductPage(product.product_name, index)} src={product.product_image} alt={product.product_name} draggable={false} />
                                         <div className='absolute fadeInUp bottom-[13px] flex flex-row justify-center items-center w-full gap-3 actionbtnCard'>
                                             <Tooltip title="View product" arrow placement="top">
-                                                <span onClick={() => handleViewProductPage(product.title, product._id)} className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
+                                                <span onClick={() => handleViewProductPage(product.product_name, index)} className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
                                                     <RemoveRedEyeRoundedIcon className='hover:text-[#fff] !text-[20px]' />
                                                 </span>
                                             </Tooltip>
                                             <Tooltip title="Add to cart" arrow placement="top">
-                                                <span onClick={() => handleAddToCart(product, 1)} className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
+                                                <span className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
                                                     <AddShoppingCartRoundedIcon className='hover:text-[#fff] !text-[20px]' />
                                                 </span>
                                             </Tooltip>
@@ -126,10 +121,10 @@ const Home = () => {
                                             </Tooltip>
                                         </div>
                                     </div>
-                                    <h4 onClick={() => handleViewProductPage(product.title, product._id)} className="des-font hover:text-[#0bc217]">
-                                        {product.title}
+                                    <h4 onClick={() => handleViewProductPage(product.product_name, index)} className="des-font hover:text-[#0bc217]">
+                                        {product.product_name}
                                     </h4>
-                                    <p onClick={() => handleViewProductPage(product.title, product._id)} className='price'><CurrencyRupeeRoundedIcon className="custom-icon" />{product.price}</p>
+                                    <p onClick={() => handleViewProductPage(product.product_name, index)} className='price'><CurrencyRupeeRoundedIcon className="custom-icon" />{product.mrp}</p>
                                 </div>
                             ))
                         }
