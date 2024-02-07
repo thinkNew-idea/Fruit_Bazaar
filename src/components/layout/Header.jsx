@@ -8,7 +8,11 @@ import logo from '../media/assets/icon/logo-no-background.png';
 import Modal from '@mui/material/Modal';
 import LoginPage from './LoginPage';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import TextField from '@mui/material/TextField';
 import { useNavigate } from "react-router-dom";
+import Drawer from 'react-modern-drawer';
+import 'react-modern-drawer/dist/index.css';
+
 
 const style = {
     position: 'absolute',
@@ -25,7 +29,7 @@ const Header = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const cartItems = useSelector(state => state.cart.cartItems);
-    console.log("cartItems", cartItems);
+    const [isOpen, setIsOpen] = React.useState(false)
     const handleClickHome = () => {
         navigate('/');
     };
@@ -38,6 +42,10 @@ const Header = () => {
     }
     const handleCartpage = () => {
         navigate('/cart');
+    }
+
+    const toggleDrawer = () => {
+        setIsOpen((prevState) => !prevState)
     }
     return (
         <>
@@ -61,7 +69,7 @@ const Header = () => {
 
                 </div>
                 <div className='flex flex-row items-center gap-[5px] text-[#4a4844]'>
-                    <SearchRoundedIcon className='!text-[30px]  mx-[6px] cursor-pointer' />
+                    <SearchRoundedIcon onClick={toggleDrawer} className='!text-[30px]  mx-[6px] cursor-pointer' />
                     <FavoriteBorderOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' />
                     <div className='relative'><LocalMallOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={handleCartpage} />
                         {cartItems.length > 0 ? <div className='w-[14px] h-[14px] bg-[#0bc217] text-[#fff] absolute right-0 rounded-full bottom-0 flex items-center justify-center text-[10px] front-[500]'>{cartItems.length}</div> : ``}
@@ -84,6 +92,32 @@ const Header = () => {
                     <div className='closebtn cursor-pointer' onClick={handleClose}><CloseRoundedIcon /></div>
                 </div>
             </Modal>
+
+            <Drawer
+                open={isOpen}
+                onClose={toggleDrawer}
+                direction='left'
+                zIndex={9999}
+                size={"40%"}
+                className='p-[15px] rounded-0'
+            >
+                <div className='closebtn cursor-pointer' onClick={toggleDrawer}><CloseRoundedIcon /></div>
+
+                <TextField
+                    fullWidth
+                    size="normal"
+                    margin="dense"
+                    id="outlined-search"
+                    label="Search anything"
+                    type="search"
+                    variant="outlined"
+                    InputLabelProps={{ required: true }}
+                    style={{ borderRadius: 0 }}
+                // value={email}
+                // onChange={handleEmailChange}
+                />
+                <div>You must enter at least 4 characters.</div>
+            </Drawer>
 
         </>
     )
