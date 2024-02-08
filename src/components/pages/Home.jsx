@@ -8,8 +8,7 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import CurrencyRupeeRoundedIcon from '@mui/icons-material/CurrencyRupeeRounded';
 import AddShoppingCartRoundedIcon from '@mui/icons-material/AddShoppingCartRounded';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../../actions/cartActions';
+import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded';
 import Skeleton from '@mui/material/Skeleton';
 import Tooltip from '@mui/material/Tooltip';
 
@@ -38,7 +37,6 @@ const fadeImages = [
 const Home = () => {
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const handleShowNow = () => {
         navigate(`/product`);
     }
@@ -65,10 +63,7 @@ const Home = () => {
             alert("Product id not get")
         }
     }
-    const handleAddToCart = (product, product_quantity_real) => {
-        const product_detail = { product, product_quantity_real }
-        dispatch(addToCart(product_detail));
-    };
+
     return (
         <>
             <div className='flex flex-col'>
@@ -110,12 +105,12 @@ const Home = () => {
                                         <img className='object-contain' onClick={() => handleViewProductPage(product.title, product._id)} src={product.photos} alt={product.title} />
                                         <div className='absolute fadeInUp bottom-[13px] flex flex-row justify-center items-center w-full gap-3 actionbtnCard'>
                                             <Tooltip title="View product" arrow placement="top">
-                                                <span onClick={() => handleViewProductPage(product.title, product._id)} className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
+                                                <span onClick={() => handleViewProductPage(product.product_name, index)} className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
                                                     <RemoveRedEyeRoundedIcon className='hover:text-[#fff] !text-[20px]' />
                                                 </span>
                                             </Tooltip>
                                             <Tooltip title="Add to cart" arrow placement="top">
-                                                <span onClick={() => handleAddToCart(product, 1)} className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
+                                                <span className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
                                                     <AddShoppingCartRoundedIcon className='hover:text-[#fff] !text-[20px]' />
                                                 </span>
                                             </Tooltip>
@@ -126,10 +121,10 @@ const Home = () => {
                                             </Tooltip>
                                         </div>
                                     </div>
-                                    <h4 onClick={() => handleViewProductPage(product.title, product._id)} className="des-font hover:text-[#0bc217]">
-                                        {product.title}
+                                    <h4 onClick={() => handleViewProductPage(product.product_name, index)} className="des-font hover:text-[#0bc217]">
+                                        {product.product_name}
                                     </h4>
-                                    <p onClick={() => handleViewProductPage(product.title, product._id)} className='price'><CurrencyRupeeRoundedIcon className="custom-icon" />{product.price}</p>
+                                    <p onClick={() => handleViewProductPage(product.product_name, index)} className='price'><CurrencyRupeeRoundedIcon className="custom-icon" />{product.mrp}</p>
                                 </div>
                             ))
                         ) : (
