@@ -43,23 +43,24 @@ const Home = () => {
         navigate(`/product`);
     }
     React.useEffect(() => {
+        const getProductListTopFive = () => {
+            axios.get('https://fruitsbazarapis.onrender.com/api/getProducts')
+                .then(response => {
+                    const productList = response.data.data;
+                    setProducts(productList);
 
-        axios.get('https://fruitsbazarapis.onrender.com/api/getProducts')
-            .then(response => {
-                const productList = response.data.data;
-                setProducts(productList);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
 
-            })
-            .catch(error => {
-                console.error('Error:', error);
+                });
+        }
 
-            });
-
-
+        getProductListTopFive();
     }, []);
     const handleViewProductPage = (pname, pid) => {
         if (pid != null) {
-            navigate(`/productdetails?name=${pname}&variant=${pid + 1}`);
+            navigate(`/productdetails?name=${pname}&variant=${pid}`);
         } else {
             alert("Product id not get")
         }
@@ -102,11 +103,10 @@ const Home = () => {
                     <h1 className='title_heading'>Our Best Seller</h1>
 
                     <div className={`flex flex-wrap py-[2rem] px-[2rem]`}>
-                        {
+                        {products.length > 0 ? (
                             products.map((product, index) => (
                                 <div className='md:w-1/3 lg:w-1/5 w-1/1 p-[10px] flex flex-col mb-[30px] cursor-pointer productCard' key={index}>
                                     <div className='w-full border border-solid border-[#ececec] relative insideCard'>
-                                        {/* <span className='absolute m-2 text-[12px] text-[#fff] bg-[#ff4949] py-[3px] px-[10px] left-0' >- {(((product.mrp - product.sale_price) / product.mrp) * 100).toFixed(0)} %</span> */}
                                         <img className='object-contain' onClick={() => handleViewProductPage(product.title, product._id)} src={product.photos} alt={product.title} />
                                         <div className='absolute fadeInUp bottom-[13px] flex flex-row justify-center items-center w-full gap-3 actionbtnCard'>
                                             <Tooltip title="View product" arrow placement="top">
@@ -132,8 +132,19 @@ const Home = () => {
                                     <p onClick={() => handleViewProductPage(product.title, product._id)} className='price'><CurrencyRupeeRoundedIcon className="custom-icon" />{product.price}</p>
                                 </div>
                             ))
-                        }
+                        ) : (
+                            Array.from({ length: 5 }, (_, index) => (
+                                <div className='md:w-1/3 lg:w-1/5 w-1/1 p-[10px] flex flex-col mb-[30px] cursor-pointer' key={index}>
+                                    <Skeleton variant="rectangular" width="100%" height={250} />
+
+                                    <Skeleton width="100%" style={{ marginTop: '10px' }} />
+                                    <Skeleton width="100%" style={{ marginTop: '10px' }} />
+
+                                </div>
+                            ))
+                        )}
                     </div>
+
 
                 </div>
 
