@@ -15,6 +15,7 @@ const ProductDetails = () => {
     const [pid, setPid] = useState(null);
     const [product_details, setProduct_Details] = useState(null);
     const [currentQtyValue, setCurrentQtyValue] = useState(1);
+    const [resultPrice, setResultPrice] = useState();
     const dispatch = useDispatch();
     const cart = useSelector((state) => state.cart.cartItems);
     const isProductInCart = Array.isArray(cart) && cart.find((item) => item.product._id === (product_details && product_details._id)); // Check if product_details is not null
@@ -52,15 +53,35 @@ const ProductDetails = () => {
     const handlePlus = () => {
         const qtyplus = currentQtyValue + 1;
         setCurrentQtyValue(qtyplus);
+        const getCurrentRateFromApi = product_details.price;
+        const basedOnPlusBtn = qtyplus;
+        setResultPrice(getCurrentRateFromApi * basedOnPlusBtn);
+
     };
+    const kg_button = (kgdata) => {
+        if (kgdata === "1KG") {
+            setResultPrice(product_details.price);
+        } else if (kgdata === "2KG") {
+            setResultPrice(product_details.price * 2)
+
+        } else if (kgdata === "3KG") {
+            setResultPrice(product_details.price * 3)
+
+        }
+
+    }
 
     const handleMinus = () => {
         const qtyminus = currentQtyValue - 1;
+        const getCurrentRateFromApi = product_details.price;
         if (qtyminus <= 0) {
             setCurrentQtyValue(qtyminus + 1);
+
         } else {
             setCurrentQtyValue(qtyminus);
+            setResultPrice(resultPrice - getCurrentRateFromApi);
         }
+
     };
 
     const handleAddToCart = (product_add, product_quantity_real) => {
@@ -97,6 +118,7 @@ const ProductDetails = () => {
                 <div className='w-[65%] gap-5 flex flex-row'>
                     <div className='w-[60%] flex flex-col justify-between'>
                         {product_details ? (
+
                             <div>
                                 <div className='flex flex-row justify-between items-center pb-2'>
                                     <h3 className="text-[24px] font-[500] text-[#3d3839]">{product_details.title} </h3>
@@ -105,7 +127,7 @@ const ProductDetails = () => {
                                     </span>
                                 </div>
                                 <div className='border-b border-[#e7e7e7] pb-[24px]'>
-                                    <p className='pricePdtail !text-start !text-[20px] font-[500]'><CurrencyRupeeRoundedIcon className="mb-3px] !text-[20px]" />{product_details.price}</p>
+                                    <p className='pricePdtail !text-start !text-[20px] font-[500]'><CurrencyRupeeRoundedIcon className="mb-3px] !text-[20px]" />{resultPrice == null ? product_details.price : resultPrice}</p>
                                 </div>
                                 <div className='text-[15px] text-[#a8a8a8] font-[400] leading-[28px]  pt-[22px]'>
                                     <p>{product_details.description}</p>
@@ -124,12 +146,12 @@ const ProductDetails = () => {
                                     <div className='flex flex-row text-[16px] text-[#3d3839] items-center gap-4 my-5'>
                                         <span className='font-[500] border-b-2'>SIZE</span>
                                         <ul className='flex gap-2 font-[500]'>
-                                            {['1KG', '2KG', '3KG'].map((e, i) => <li className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={e} key={i}>{e}</li>)}
+                                            {['1KG', '2KG', '3KG'].map((kgvlue, index) => <li onClick={() => kg_button(kgvlue)} className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={kgvlue} key={index}>{kgvlue}</li>)}
                                         </ul>
                                     </div>
                                     <div className='flex gap-4 w-full'>
                                         <div className='flex border border-[2px] border-[#3d3839] w-[90px] relative'>
-                                            <input className='qtyvalue' type='text' onChange={handleqtyValue} value={currentQtyValue.toString()} />
+                                            <input readOnly className='qtyvalue' type='text' onChange={handleqtyValue} value={currentQtyValue.toString()} />
                                             <div className='flex flex-col'>
                                                 <button className='qty_plus' onClick={handlePlus}><span><AddRoundedIcon /></span></button>
                                                 <button className='qty_minus' onClick={handleMinus}><span><RemoveRoundedIcon /></span></button>
