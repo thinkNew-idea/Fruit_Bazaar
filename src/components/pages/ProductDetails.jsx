@@ -17,12 +17,12 @@ const ProductDetails = () => {
     const [currentQtyValue, setCurrentQtyValue] = useState(1);
     const [resultPrice, setResultPrice] = useState();
     const dispatch = useDispatch();
-    const cart = useSelector((state) => state.cart.cartItems);
-    const isProductInCart = Array.isArray(cart) && cart.find((item) => item.product?._id === (product_details && product_details?._id)); // Check if product_details is not null
+    const cart = useSelector((state) => state?.cart?.cartItems);
+    const isProductInCart = Array?.isArray(cart) && cart?.find((item) => item?.product?._id === (product_details && product_details?._id)); // Check if product_details is not null
     const navigate = useNavigate();
 
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
+        const params = new URLSearchParams(window?.location?.search);
         const pidFromUrl = params.get('variant');
 
         if (pidFromUrl) {
@@ -31,7 +31,7 @@ const ProductDetails = () => {
         if (pid != null) {
             axios.get(`https://fruitsbazarapis.onrender.com/api/getProducts/${pid}`)
                 .then(response => {
-                    const product_details = response.data.data;
+                    const product_details = response?.data?.data;
                     setProduct_Details(product_details);
                 })
                 .catch(error => {
@@ -87,14 +87,14 @@ const ProductDetails = () => {
     const handleAddToCart = (product_add, product_quantity_real) => {
         const product = {
             _id: product_add?._id,
-            title: product_add.title,
-            description: product_add.description,
-            productCount: product_add.productCount,
-            photos: product_add.photos,
-            price: product_add.price,
-            inStock: product_add.inStock,
-            createdAt: product_add.createdAt,
-            __v: product_add.__v
+            title: product_add?.title,
+            description: product_add?.description,
+            productCount: product_add?.productCount,
+            photos: product_add?.photos,
+            price: product_add?.price,
+            inStock: product_add?.inStock,
+            createdAt: product_add?.createdAt,
+            __v: product_add?.__v
         };
         const product_detail = { product, product_quantity_real };
         if (!isProductInCart) { // If product is not already in cart
@@ -109,7 +109,7 @@ const ProductDetails = () => {
                 <div className='w-[35%]'>
                     {product_details ? (
                         <div className='border border-solid border-[#ececec] min-h-[100%] flex justify-between'>
-                            <img className='w-full' src={product_details.photos} style={{ objectFit: "contain" }} />                        </div>
+                            <img className='w-full' src={product_details?.photos} style={{ objectFit: "contain" }} />                        </div>
                     ) : (
                         <Skeleton variant="rectangular" className='w-full' height={600} />
 
