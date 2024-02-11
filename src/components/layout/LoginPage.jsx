@@ -34,7 +34,7 @@ const LoginPage = (props) => {
 
             setMailAlertMge("Your email is invalid");
         } else {
-            const response = await ApiCall("post", 'sendOtp', { email: email })
+            const response = await ApiCall("post", 'VerfiyEmail', { email: email })
             if (response.status == 200) {
                 toast.success(response.data.message);
                 setStatusOtp(response.data.message);
