@@ -18,7 +18,7 @@ const ProductDetails = () => {
     const [resultPrice, setResultPrice] = useState();
     const dispatch = useDispatch();
     const cart = useSelector((state) => state.cart.cartItems);
-    const isProductInCart = Array.isArray(cart) && cart.find((item) => item.product._id === (product_details && product_details._id)); // Check if product_details is not null
+    const isProductInCart = Array.isArray(cart) && cart.find((item) => item.product?._id === (product_details && product_details?._id)); // Check if product_details is not null
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -86,7 +86,7 @@ const ProductDetails = () => {
 
     const handleAddToCart = (product_add, product_quantity_real) => {
         const product = {
-            _id: product_add._id,
+            _id: product_add?._id,
             title: product_add.title,
             description: product_add.description,
             productCount: product_add.productCount,
