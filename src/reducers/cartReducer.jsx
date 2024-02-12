@@ -7,8 +7,8 @@ const cartReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_TO_CART:
             // Check if the product is already in the cart
-            const existingProductIndex = state.cartItems.findIndex(
-                item => item.product._id === action.payload.product._id
+            const existingProductIndex = state?.cartItems?.findIndex(
+                item => item?.product?._id === action?.payload?.product?._id
             );
             if (existingProductIndex !== -1) {
                 // If the product is already in the cart, show an alert
