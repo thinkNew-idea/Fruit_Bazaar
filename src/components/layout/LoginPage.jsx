@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
-import Axios from 'axios';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import logo from '../media/assets/icon/logo-no-background.png';
-import { MuiOtpInput } from 'mui-one-time-password-input'
 import { validEmail } from "./Regex.js";
 import toast, { Toaster } from "react-hot-toast";
-import axios from 'axios';
-import ApiCall from '../../Utils/api.js';
+import { ApiCall, Loginapicall } from "../../Utils/api";
 const LoginPage = (props) => {
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    console.log("password", password);
     const [otpdata, setOtpdata] = useState();
     const [error, setError] = useState(null);
-    const [statusOtp, setStatusOtp] = useState();
-    console.log("statusOtp", statusOtp);
+    const [verifyemailMess, setVerifyemailMess] = useState();
     const [MailAlertMge, setMailAlertMge] = React.useState("");
+    const [PassAlertMge, setPassAlertMge] = React.useState("");
     const [loginSuccess, setloginSuccess] = useState();
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -26,7 +24,29 @@ const LoginPage = (props) => {
     const handleOTPChange = (newValue) => {
         setOtpdata(newValue);
     };
-    const sendOTP = async () => {
+
+    const handleLogin = async () => {
+        if (!password.trim()) {
+            setPassAlertMge('Please enter your password');
+        } else {
+            try {
+                const response = await Loginapicall("post", 'login', { email: email, password: password });
+                if (response.status === 200) {
+                    if (response.data.ok === true) {
+                        toast.success(response.data.message);
+                    } else if (response.data.ok === false) {
+                        toast.error(response.data.message);
+                    }
+                } else {
+                    console.error("Unexpected response status:", response.status);
+                }
+            } catch (error) {
+                toast.error("An error occurred during login.");
+
+            }
+        }
+    };
+    const handleVerifyEmail = async () => {
         if (email === "") {
             setMailAlertMge("Please enter your email");
 
@@ -36,30 +56,19 @@ const LoginPage = (props) => {
         } else {
             const response = await ApiCall("post", 'VerfiyEmail', { email: email })
             if (response.status == 200) {
-                toast.success(response.data.message);
-                setStatusOtp(response.data.message);
+                if (response.data.message == 'User already exits with given Email!') {
+                    toast.success('Hello, Welcome');
+                } else if (response.data.message == 'New User') {
+                    toast.success('Please wait for the resister page.');
+                }
+
+                setVerifyemailMess(response.data.message);
             } else {
                 setError('An error occurred');
             }
         }
     }
 
-
-    const handleLogin = () => {
-        const url = 'https://sgamare32.pythonanywhere.com/api/v1/accounts/login';
-        axios.post(url, {
-            email: email,
-            otp: otpdata
-        })
-            .then(response => {
-                setloginSuccess(response.data.message);
-                toast.success(response.data.message);
-
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    };
     if (loginSuccess == "Success") {
         props.statusClick(false)
     }
@@ -72,9 +81,9 @@ const LoginPage = (props) => {
                 </div>
             </div>
             <div className='text-center font-[500] text-[#4a4844] text-[17px] pt-3 pb-3'>It's wonderful to have you back!</div>
-            {statusOtp == 'OTP sent successfuly' ? (
+            {verifyemailMess == 'User already exits with given Email!' ? (
                 <>
-                    <MuiOtpInput
+                    {/* <MuiOtpInput
                         length={6}
                         value={otpdata}
                         onChange={handleOTPChange}
@@ -82,22 +91,7 @@ const LoginPage = (props) => {
                         display="flex"
                         gap={2}
                     />
-                    <Button
-                        style={{
-                            width: '100%',
-                            padding: '13px 16px',
-                            fontSize: '16px',
-                            fontWeight: 600,
-                            backgroundColor: '#000',
-                            borderRadius: 0,
-                            marginTop: 10
-                        }}
-                        size="normal"
-                        variant="contained"
-                        onClick={handleLogin}
-                    >
-                        Otp Submit
-                    </Button>
+                    */}
                     <TextField
                         fullWidth
                         id="outlined-multiline-flexible"
@@ -124,6 +118,24 @@ const LoginPage = (props) => {
                         value={password}
                         onChange={handlePasswordChange}
                     />
+                    {PassAlertMge && <div className='text-center     text-[13px]' style={{ color: 'red' }}>{PassAlertMge}</div>}
+
+                    <Button
+                        style={{
+                            width: '100%',
+                            padding: '13px 16px',
+                            fontSize: '16px',
+                            fontWeight: 600,
+                            backgroundColor: '#000',
+                            borderRadius: 0,
+                            marginTop: 10
+                        }}
+                        size="normal"
+                        variant="contained"
+                        onClick={handleLogin}
+                    >
+                        Login
+                    </Button>
                 </>
             ) : (
                 <>
@@ -154,9 +166,9 @@ const LoginPage = (props) => {
                         }}
                         size="normal"
                         variant="contained"
-                        onClick={sendOTP}
+                        onClick={handleVerifyEmail}
                     >
-                        SEND OTP
+                        Login / Signup
                     </Button>
 
                     {error && <div className='text-center text-[15px] p-2' style={{ color: 'red' }}>{error}</div>}
