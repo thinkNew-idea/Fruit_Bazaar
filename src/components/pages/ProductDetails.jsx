@@ -9,9 +9,10 @@ import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import Button from '@mui/material/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../actions/cartActions';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const ProductDetails = () => {
+    const location=useLocation();
     const [pid, setPid] = useState(null);
     const [product_details, setProduct_Details] = useState(null);
     const [currentQtyValue, setCurrentQtyValue] = useState(1);
@@ -22,11 +23,11 @@ const ProductDetails = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const params = new URLSearchParams(window?.location?.search);
-        const pidFromUrl = params.get('variant');
+        // const params = new URLSearchParams(window?.location?.search);
+        // const pidFromUrl = params.get('variant');
 
-        if (pidFromUrl) {
-            setPid(pidFromUrl);
+        if (location?.state?.pid) {
+            setPid(location?.state?.pid);
         }
         if (pid != null) {
             axios.get(`https://fruitsbazarapis.onrender.com/api/getProducts/${pid}`)

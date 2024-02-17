@@ -10,8 +10,11 @@ import Header from '../layout/Header';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import { Button } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 
 const CartComponent = () => {
+    const location = useLocation();
+    const Type= location?.state?.type
     const cartItems = useSelector(state => state?.cart?.cartItems);
     const dispatch = useDispatch();
     const handleDelete = (index) => {
@@ -35,8 +38,6 @@ const CartComponent = () => {
     const handleMinus = (index) => {
         dispatch(decreaseCartItemQuantity(index));
     };
-
-
     const calculateTotal = (item) => {
         return (item?.product_quantity_real || 0) * parseFloat(item?.product?.price);
     };
@@ -47,6 +48,9 @@ const CartComponent = () => {
         }, 0);
     };
 
+    
+
+
     return (
         <div className='flex flex-col'>
             <Header />
@@ -56,8 +60,8 @@ const CartComponent = () => {
                         <tr className='hederingoftable'>
                             <th>Product Name</th>
                             <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
+                           {!Type&& <th>Quantity</th>}
+                           {!Type&& <th>Total</th>}
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -70,7 +74,7 @@ const CartComponent = () => {
                                     {item?.product?.title}
                                 </td>
                                 <td>{item?.product?.price}</td>
-                                <td className='w-[119px]'>
+                                {!Type&&<td className='w-[119px]'>
                                     <div className='flex border border-[2px] border-[#3d3839] w-[90px] relative'>
                                         <input
                                             className='qtyvalue'
@@ -87,8 +91,8 @@ const CartComponent = () => {
                                             </button>
                                         </div>
                                     </div>
-                                </td>
-                                <td>{calculateTotal(item)}</td>
+                                </td>}
+                               {!Type&&<td>{calculateTotal(item)}</td>}
                                 <td>
                                     <button onClick={() => handleDelete(index)}>Delete</button>
                                 </td>
@@ -97,7 +101,7 @@ const CartComponent = () => {
 
                     </tbody>
                 </table>
-                <div className="total-section hederingoftable mt-5 p-[41px]">
+                {!Type &&<div className="total-section hederingoftable mt-5 p-[41px]">
                     <div>
                         <h2 className="font-[600] productTotal">PRODUCT TOTALS</h2>
                         <div className=' pt-[20px]  pb-[40px] flex flex-row justify-between'>
@@ -124,7 +128,7 @@ const CartComponent = () => {
                         </Button></div>
                     </div>
 
-                </div>
+                </div>}
             </div>
         </div>
     );

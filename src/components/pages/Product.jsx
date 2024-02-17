@@ -45,7 +45,7 @@ const Product = () => {
     const navigate = useNavigate();
     const handleViewProductPage = (pname, pid) => {
         if (pid != null) {
-            navigate(`/productdetails?name=${pname}&variant=${pid}`);
+            navigate(`/productdetails`,{state:{pname:pname,pid:pid}});
         } else {
             alert("Product id not get")
         }

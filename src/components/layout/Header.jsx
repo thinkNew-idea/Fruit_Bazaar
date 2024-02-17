@@ -91,8 +91,9 @@ const Header = () => {
     const statusClick = () => {
         setOpen(false);
     }
-    const handleCartpage = () => {
-        navigate('/cart');
+    const handleCartpage = (type) => {
+        if(type){ return navigate('/cart',{state:{type:"wish"}});}
+        else {return navigate('/cart');}
     }
 
     const toggleDrawer = () => {
@@ -100,7 +101,7 @@ const Header = () => {
     }
     const handleViewProductPage = (pname, pid) => {
         if (pid != null) {
-            navigate(`/productdetails?name=${pname}&variant=${pid}`);
+            navigate(`/productdetails`,{state:{pname:pname,pid:pid}});
         } else {
             alert("Product id not get")
         }
@@ -124,8 +125,8 @@ const Header = () => {
                 </div>
                 <div className='flex flex-row items-center gap-[5px] text-[#4a4844]'>
                     <SearchRoundedIcon onClick={toggleDrawer} className='!text-[30px]  mx-[6px] cursor-pointer' />
-                    <FavoriteBorderOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' />
-                    <div className='relative'><LocalMallOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={handleCartpage} />
+                    <FavoriteBorderOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={()=>{handleCartpage("wish")}} />
+                    <div className='relative'><LocalMallOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={()=>{handleCartpage()}} />
                         {cartItems.length > 0 ? <div className='w-[14px] h-[14px] bg-[#0bc217] text-[#fff] absolute right-0 rounded-full bottom-0 flex items-center justify-center text-[10px] front-[500]'>{cartItems.length}</div> : ``}
                     </div>
                     <PermIdentityOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={handleOpen} />
