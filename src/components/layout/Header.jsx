@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -35,33 +35,52 @@ const Header = () => {
     const [search, setSearch] = React.useState('');
     const [searchResults, setSearchResults] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
-    console.log("searchResults", searchResults.data);
+    const [searching,setsearching]=useState(false);
+    let timeout;
+    useEffect(()=>{
+       return ()=>{
+        setsearching(false);
+        clearTimeout(timeout);
+       } 
+    },[])
+
+   const debounce=useCallback((fun,time)=>{
+    clearTimeout(timeout);
+    timeout= setTimeout(() => {
+        fun()
+    }, time);
+   },[]) 
+
     const handleSerachChange = (event) => {
         setSearch(event.target.value);
-    };
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setIsLoading(true);
-                if (search.trim().length >= 4) {
-                    const response = await axios.get(`https://fruitsbazarapis.onrender.com/api/getProducts=${search}`);
-                    setSearchResults(response.data);
-                } else {
-                    setSearchResults([]);
-                }
-                setIsLoading(false);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setIsLoading(false);
-            }
-        };
-
-        if (search.trim() !== '') {
-            fetchData();
+        if (search?.length>0) {
+            debounce(()=>{console.log("searching");setsearching(true)},400)
         } else {
             setSearchResults([]);
         }
-    }, [search]);
+    };
+
+    const fetchData = async () => {
+        try {
+            setIsLoading(true);
+            if (search?.length >= 4) {
+                const response = await axios.get(`https://fruitsbazarapis.onrender.com/api/getProducts=${search}`);
+                setSearchResults(response.data);
+            } else {
+                setSearchResults([]);
+            }
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if(searching){
+            fetchData();
+        }
+    }, [search,searching]);
     const handleClickHome = () => {
         navigate('/');
     };
@@ -160,7 +179,7 @@ const Header = () => {
                         ))}
                     </div>
                 )}
-                {search.trim().length < 4 && <div>You must enter at least 4 characters.</div>}
+                {search?.length < 4 && <div>You must enter at least 4 characters.</div>}
             </Drawer>
 
         </>
