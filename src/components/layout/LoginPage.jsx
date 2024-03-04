@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { useNavigate } from "react-router-dom";
 import logo from '../media/assets/icon/logo-no-background.png';
 import { validEmail } from "./Regex.js";
 import toast, { Toaster } from "react-hot-toast";
 import { ApiCall, Loginapicall } from "../../Utils/api";
 const LoginPage = (props) => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    console.log("password", password);
+    const [token, setToken] = useState(localStorage.getItem('token') || '');
+    const [userId, setUserId] = useState('');
     const [otpdata, setOtpdata] = useState();
     const [error, setError] = useState(null);
     const [verifyemailMess, setVerifyemailMess] = useState();
@@ -34,6 +37,10 @@ const LoginPage = (props) => {
                 if (response.status === 200) {
                     if (response.data.ok === true) {
                         toast.success(response.data.message);
+                        localStorage.setItem('token', response.data.meta?.token);
+                        setToken(token);
+                        setUserId(response.data.data._id);
+                        localStorage.setItem('userID', userId);
                     } else if (response.data.ok === false) {
                         toast.error(response.data.message);
                     }
@@ -59,9 +66,10 @@ const LoginPage = (props) => {
                 if (response.data.message == 'User already exits with given Email!') {
                     toast.success('Hello, Welcome');
                 } else if (response.data.message == 'New User') {
-                    toast.success('Please wait for the resister page.');
+                    toast.error('You have not registered, please register first');
+                    navigate('/register-page');
+                    props.handleClose();
                 }
-
                 setVerifyemailMess(response.data.message);
             } else {
                 setError('An error occurred');

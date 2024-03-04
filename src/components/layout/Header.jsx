@@ -35,52 +35,40 @@ const Header = () => {
     const [search, setSearch] = React.useState('');
     const [searchResults, setSearchResults] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [searching,setsearching]=useState(false);
     let timeout;
-    useEffect(()=>{
-       return ()=>{
-        setsearching(false);
-        clearTimeout(timeout);
-       } 
-    },[])
+    useEffect(() => {
+        return () => {
+            clearTimeout(timeout);
+        }
+    }, [])
 
-   const debounce=useCallback((fun,time)=>{
-    clearTimeout(timeout);
-    timeout= setTimeout(() => {
-        fun()
-    }, time);
-   },[]) 
+    const debounce = useCallback((fun, time) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            fun()
+        }, time);
+    }, [])
 
     const handleSerachChange = (event) => {
         setSearch(event.target.value);
-        if (search?.length>0) {
-            debounce(()=>{console.log("searching");setsearching(true)},400)
+        if (search?.length >= 4) {
+            debounce(async () => {
+                console.log("searching");
+                try {
+                    setIsLoading(true);
+                    const response = await axios.get(`https://fruitsbazarapis.onrender.com/api/getProducts=${search}`);
+                    setSearchResults(response.data);
+                    setIsLoading(false);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    setIsLoading(false);
+                }
+            }, 400)
         } else {
             setSearchResults([]);
         }
     };
 
-    const fetchData = async () => {
-        try {
-            setIsLoading(true);
-            if (search?.length >= 4) {
-                const response = await axios.get(`https://fruitsbazarapis.onrender.com/api/getProducts=${search}`);
-                setSearchResults(response.data);
-            } else {
-                setSearchResults([]);
-            }
-            setIsLoading(false);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if(searching){
-            fetchData();
-        }
-    }, [search,searching]);
     const handleClickHome = () => {
         navigate('/');
     };
@@ -91,9 +79,11 @@ const Header = () => {
     const statusClick = () => {
         setOpen(false);
     }
-    const handleCartpage = (type) => {
-        if(type){ return navigate('/cart',{state:{type:"wish"}});}
-        else {return navigate('/cart');}
+    const handleCartpage = () => {
+        navigate('/cart');
+    }
+    const handleWishlistPage = () => {
+        navigate('/wishlist');
     }
 
     const toggleDrawer = () => {
@@ -101,7 +91,7 @@ const Header = () => {
     }
     const handleViewProductPage = (pname, pid) => {
         if (pid != null) {
-            navigate(`/productdetails`,{state:{pname:pname,pid:pid}});
+            navigate(`/productdetails`, { state: { pname: pname, pid: pid } });
         } else {
             alert("Product id not get")
         }
@@ -125,8 +115,8 @@ const Header = () => {
                 </div>
                 <div className='flex flex-row items-center gap-[5px] text-[#4a4844]'>
                     <SearchRoundedIcon onClick={toggleDrawer} className='!text-[30px]  mx-[6px] cursor-pointer' />
-                    <FavoriteBorderOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={()=>{handleCartpage("wish")}} />
-                    <div className='relative'><LocalMallOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={()=>{handleCartpage()}} />
+                    <FavoriteBorderOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={() => { handleWishlistPage() }} />
+                    <div className='relative'><LocalMallOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={() => { handleCartpage() }} />
                         {cartItems.length > 0 ? <div className='w-[14px] h-[14px] bg-[#0bc217] text-[#fff] absolute right-0 rounded-full bottom-0 flex items-center justify-center text-[10px] front-[500]'>{cartItems.length}</div> : ``}
                     </div>
                     <PermIdentityOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={handleOpen} />
@@ -138,7 +128,7 @@ const Header = () => {
                 onClose={handleClose}
             >
                 <div className='noFocusOutline' style={style}>
-                    <LoginPage statusClick={statusClick} />
+                    <LoginPage statusClick={statusClick} handleClose={handleClose} />
                     <div className='closebtn cursor-pointer' onClick={handleClose}><CloseRoundedIcon /></div>
                 </div>
             </Modal>

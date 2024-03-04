@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../layout/Header';
 import axios from 'axios';
 import Skeleton from '@mui/material/Skeleton';
-import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
+import AddProductWishlistBtn from '../wishlist/addProductWishlist';
 import CurrencyRupeeRoundedIcon from '@mui/icons-material/CurrencyRupeeRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
@@ -12,7 +12,7 @@ import { addToCart } from '../../actions/cartActions';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const ProductDetails = () => {
-    const location=useLocation();
+    const location = useLocation();
     const [pid, setPid] = useState(null);
     const [product_details, setProduct_Details] = useState(null);
     const [currentQtyValue, setCurrentQtyValue] = useState(1);
@@ -33,6 +33,7 @@ const ProductDetails = () => {
             axios.get(`https://fruitsbazarapis.onrender.com/api/getProducts/${pid}`)
                 .then(response => {
                     const product_details = response?.data?.data;
+                    console.log(product_details);
                     setProduct_Details(product_details);
                 })
                 .catch(error => {
@@ -105,7 +106,7 @@ const ProductDetails = () => {
 
     return (
         <div className='flex flex-col'>
-            <Header />
+            {/* <Header /> */}
             <div className='flex flex-row w-full gap-5 py-[2rem] px-[2rem]'>
                 <div className='w-[35%]'>
                     {product_details ? (
@@ -123,9 +124,7 @@ const ProductDetails = () => {
                             <div>
                                 <div className='flex flex-row justify-between items-center pb-2'>
                                     <h3 className="text-[24px] font-[500] text-[#3d3839]">{product_details.title} </h3>
-                                    <span className='bg-[#fff] border border-solid border-[#e9e9e9]  rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
-                                        <FavoriteBorderRoundedIcon className='hover:text-[#fff] !text-[20px]' />
-                                    </span>
+                                    <AddProductWishlistBtn productID={product_details._id} />
                                 </div>
                                 <div className='border-b border-[#e7e7e7] pb-[24px]'>
                                     <p className='pricePdtail !text-start !text-[20px] font-[500]'><CurrencyRupeeRoundedIcon className="mb-3px] !text-[20px]" />{resultPrice == null ? product_details.price : resultPrice}</p>
