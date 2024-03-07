@@ -45,28 +45,30 @@ const RegisterPage = () => {
     };
     const handleSubmit = async () => {
         // Define messages for empty fields
-        const emptyFieldMessages = {
-            email: 'Please enter your email',
-            otpum: 'Please enter your OTP',
-            firstName: 'Please enter your first name',
-            secondName: 'Please enter your second name',
-            password: 'Please enter your password',
-            mobileNumber: 'Please enter your mobile number',
-            addressOne: 'Please enter your address (line 1)',
-            addressTwo: 'Please enter your address (line 2)',
+        const emptyFields = {
+            email: { value: email, message: 'Please enter your email' },
+            otpum: { value: otpum, message: 'Please enter your OTP' },
+            firstName: { value: firstName, message: 'Please enter your first name' },
+            secondName: { value: secondName, message: 'Please enter your second name' },
+            password: { value: password, message: 'Please enter your password' },
+            mobileNumber: { value: mobileNumber, message: 'Please enter your mobile number' },
+            addressOne: { value: addressOne, message: 'Please enter your address (line 1)' },
+            addressTwo: { value: addressTwo, message: 'Please enter your address (line 2)' },
         };
 
-        // Iterate through fields and check if any are empty
-        for (const field in emptyFieldMessages) {
-            if (!eval(field)) { // Check if the field is empty
-                toast.error(emptyFieldMessages[field]); // Display the respective message
-                return; // Exit the function if any field is empty
+        let isEmptyField = false;
+        for (const field in emptyFields) {
+            if (!emptyFields[field].value) {
+                toast.error(emptyFields[field].message);
+                isEmptyField = true;
             }
         }
 
-        // If all fields are filled, proceed with form submission logic
+        if (isEmptyField) {
+            return;
+        }
+
         try {
-            // Your form submission logic here
         } catch (error) {
             toast.error('An error occurred during form submission');
         }
@@ -113,7 +115,7 @@ const RegisterPage = () => {
                             type='email'
                             variant="outlined"
                             InputLabelProps={{ required: true }}
-                            style={{ borderRadius: 0 }}
+                            style={{ borderRadius: 0, borderColor: !email && 'red' }}
                             value={email}
                             onChange={handleEmailChange}
                         />
@@ -147,7 +149,7 @@ const RegisterPage = () => {
                     type='number'
                     variant="outlined"
                     InputLabelProps={{ required: true }}
-                    style={{ borderRadius: 0 }}
+                    style={{ borderRadius: 0, borderColor: !otpum && 'red' }}
                     value={otpum}
                     onChange={handleOtpNum}
                 />
