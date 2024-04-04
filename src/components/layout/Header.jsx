@@ -14,6 +14,8 @@ import TextField from '@mui/material/TextField';
 import { useNavigate } from "react-router-dom";
 import Drawer from 'react-modern-drawer';
 import 'react-modern-drawer/dist/index.css';
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 
 const style = {
@@ -27,7 +29,9 @@ const style = {
 };
 const Header = () => {
     const navigate = useNavigate();
-    const [open, setOpen] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const openMenu = Boolean(anchorEl);
+    const [openModel, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const cartItems = useSelector(state => state.cart.cartItems);
@@ -48,7 +52,12 @@ const Header = () => {
             fun()
         }, time);
     }, [])
-
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    };
+    const handleClickTo_OpenMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
     const handleSerachChange = (event) => {
         setSearch(event.target.value);
         if (search?.length >= 4) {
@@ -76,6 +85,9 @@ const Header = () => {
         navigate('/product');
     };
 
+    const handleOpenRegisterPage = () => {
+        navigate('/register-page');
+    };
     const statusClick = () => {
         setOpen(false);
     }
@@ -119,12 +131,54 @@ const Header = () => {
                     <div className='relative'><LocalMallOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={() => { handleCartpage() }} />
                         {cartItems.length > 0 ? <div className='w-[14px] h-[14px] bg-[#0bc217] text-[#fff] absolute right-0 rounded-full bottom-0 flex items-center justify-center text-[10px] front-[500]'>{cartItems.length}</div> : ``}
                     </div>
-                    <PermIdentityOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={handleOpen} />
+                    <PermIdentityOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={handleClickTo_OpenMenu} />
                 </div>
             </div>
+            {/* login menu start */}
+            <Menu
+                id="account-menu"
+                anchorEl={anchorEl}
+                open={openMenu}
+                onClose={handleCloseMenu}
+                PaperProps={{
+                    elevation: 0,
+                    sx: {
+                        overflow: 'visible',
+                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                        mt: 3,
+                        ml: -4,
+                        '& .MuiAvatar-root': {
+                            width: 32,
+                            height: 32,
+                            ml: -0.5,
+                            mr: 8,
+                        },
+                        '&:before': {
+                            content: '""',
+                            display: 'block',
+                            position: 'absolute',
+                            top: 0,
+                            right: 14,
+                            width: 10,
+                            height: 10,
+                            bgcolor: 'background.paper',
+                            transform: 'translateY(-50%) rotate(45deg)',
+                            zIndex: 0,
+                        },
+                    },
+                }}
+                MenuListProps={{
+                    "aria-labelledby": "account-menu"
+                }}
+            >
+                <MenuItem onClick={handleOpen}>Login</MenuItem>
+                <MenuItem onClick={handleOpenRegisterPage}>Register</MenuItem>
+                <MenuItem >Logout</MenuItem>
+            </Menu>
+            {/* login menu end */}
             {/* login model */}
             <Modal
-                open={open}
+                open={openModel}
                 onClose={handleClose}
             >
                 <div className='noFocusOutline' style={style}>

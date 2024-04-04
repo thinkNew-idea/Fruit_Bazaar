@@ -54,80 +54,89 @@ const CartComponent = () => {
         <div className='flex flex-col'>
             {/* <Header /> */}
             <div className='px-[10rem] py-[2rem]'>
-                <table>
-                    <thead>
-                        <tr className='hederingoftable'>
-                            <th>Product Name</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {cartItems.map((item, index) => (
+                {cartItems && cartItems.length > 0 ? (
+                    <>
+                        <table>
+                            <thead>
+                                <tr className='hederingoftable'>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {cartItems.map((item, index) => (
 
-                            <tr key={index} className='hederingoftable'>
-                                <td className='flex items-center font-[500] gap-3'>
-                                    <img src={item?.product?.photos} alt={item?.product?.title} className='product-image w-[135px] border border-solid border-[#ececec]' />
-                                    {item?.product?.title}
-                                </td>
-                                <td>{item?.product?.price}</td>
-                                <td className='w-[119px]'>
-                                    <div className='flex border border-[2px] border-[#3d3839] w-[90px] relative'>
-                                        <input
-                                            className='qtyvalue'
-                                            type='text'
-                                            onChange={(e) => handleqtyValue(e, index)}
-                                            value={item.product_quantity_real ?? ''}
-                                        />
-                                        <div className='flex flex-col'>
-                                            <button className='qty_plus' onClick={() => handlePlus(index)}>
-                                                <span><AddRoundedIcon /></span>
-                                            </button>
-                                            <button className='qty_minus' onClick={() => handleMinus(index)}>
-                                                <span><RemoveRoundedIcon /></span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>{calculateTotal(item)}</td>
-                                <td>
-                                    <button onClick={() => handleDelete(index)}>Delete</button>
-                                </td>
-                            </tr>
-                        ))}
+                                    <tr key={index} className='hederingoftable'>
+                                        <td className='flex items-center font-[500] gap-3'>
+                                            <img src={item?.product?.photos} alt={item?.product?.title} className='product-image w-[135px] border border-solid border-[#ececec]' />
+                                            {item?.product?.title}
+                                        </td>
+                                        <td>{item?.product?.price}</td>
+                                        <td className='w-[119px]'>
+                                            <div className='flex border border-[2px] border-[#3d3839] w-[90px] relative'>
+                                                <input
+                                                    className='qtyvalue'
+                                                    type='text'
+                                                    onChange={(e) => handleqtyValue(e, index)}
+                                                    value={item.product_quantity_real ?? ''}
+                                                />
+                                                <div className='flex flex-col'>
+                                                    <button className='qty_plus' onClick={() => handlePlus(index)}>
+                                                        <span><AddRoundedIcon /></span>
+                                                    </button>
+                                                    <button className='qty_minus' onClick={() => handleMinus(index)}>
+                                                        <span><RemoveRoundedIcon /></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{calculateTotal(item)}</td>
+                                        <td>
+                                            <button onClick={() => handleDelete(index)}>Delete</button>
+                                        </td>
+                                    </tr>
+                                ))}
 
-                    </tbody>
-                </table>
-                <div className="total-section hederingoftable mt-5 p-[41px]">
-                    <div>
-                        <h2 className="font-[600] productTotal">PRODUCT TOTALS</h2>
-                        <div className=' pt-[20px]  pb-[40px] flex flex-row justify-between'>
-                            <p className="font-[600]">Total: </p>
-                            <p className="font-[600]">Rs. {calculateCartTotal()}</p>
+                            </tbody>
+                        </table>
+                        <div className="total-section hederingoftable mt-5 p-[41px]">
+                            <div>
+                                <h2 className="font-[600] productTotal">PRODUCT TOTALS</h2>
+                                <div className=' pt-[20px]  pb-[40px] flex flex-row justify-between'>
+                                    <p className="font-[600]">Total: </p>
+                                    <p className="font-[600]">Rs. {calculateCartTotal()}</p>
+
+                                </div>
+                                <div className='flex justify-end'><Button
+
+                                    style={{
+                                        width: 'auto',
+                                        padding: '13px 4rem',
+                                        fontSize: '16px',
+                                        fontWeight: 600,
+                                        backgroundColor: '#0bc217',
+                                        borderRadius: 0,
+
+                                    }}
+                                    size="normal"
+                                    variant="contained"
+
+                                >
+                                    Proceed to checkout
+                                </Button></div>
+                            </div>
 
                         </div>
-                        <div className='flex justify-end'><Button
+                    </>
+                ) : (
+                    <>
+                        <div className='text-center'>Your cart is currently empty.</div>
+                        <div className='text-center'>Continue browsing here.</div></>
+                )}
 
-                            style={{
-                                width: 'auto',
-                                padding: '13px 4rem',
-                                fontSize: '16px',
-                                fontWeight: 600,
-                                backgroundColor: '#0bc217',
-                                borderRadius: 0,
-
-                            }}
-                            size="normal"
-                            variant="contained"
-
-                        >
-                            Proceed to checkout
-                        </Button></div>
-                    </div>
-
-                </div>
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import Header from '../layout/Header'
 import CurrencyRupeeRoundedIcon from '@mui/icons-material/CurrencyRupeeRounded';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
@@ -6,7 +6,39 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-const wishlistpage = () => {
+const Wishlistpage = () => {
+    React.useEffect(() => {
+        const token = localStorage.getItem('token');
+        const userid = localStorage.getItem('userID');
+        console.log(token);
+        console.log(userid);
+
+        axios.get('https://fruitsbazarapis.onrender.com/api/getCart', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            params: {
+                user_id: userid
+            }
+        })
+            .then(response => {
+                console.log('Wishlist items retrieved successfully:', response.data);
+                // Log the data received from the API call
+                const wishlistItems = response.data.data;
+                wishlistItems.forEach(item => {
+                    console.log('Product Title:', item.title);
+                    console.log('Price:', item.price);
+                    console.log('Photo:', item.photo);
+                    // Log other properties as needed
+                });
+            })
+            .catch(error => {
+                console.error('Error retrieving wishlist items:', error);
+                toast.error(error.message); // Pass only the error message to toast.error
+            });
+    }, []);
+
+
     const handleViewProductPage = () => {
         alert("Product id not get")
     }
@@ -31,6 +63,7 @@ const wishlistpage = () => {
             });
 
     }
+
     return (
         <div className='flex flex-col'>
             {/* <Header /> */}
@@ -61,4 +94,4 @@ const wishlistpage = () => {
     )
 }
 
-export default wishlistpage
+export default Wishlistpage
