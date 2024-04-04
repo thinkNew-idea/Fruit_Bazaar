@@ -12,30 +12,49 @@ const Wishlistpage = () => {
         const userid = localStorage.getItem('userID');
         console.log(token);
         console.log(userid);
-
-        axios.get('https://fruitsbazarapis.onrender.com/api/getCart', {
-            headers: {
-                'Authorization': `Bearer ${token}`
+        let data = JSON.stringify({
+            "user_id":userid
+          });
+          
+          let config = {
+            method: 'post',
+            url: 'https://fruitsbazarapis.onrender.com/api/getCart',
+            headers: { 
+              'Content-Type': 'application/json', 
+              'Authorization': `Bearer ${token}`
             },
-            params: {
-                user_id: userid
-            }
-        })
-            .then(response => {
-                console.log('Wishlist items retrieved successfully:', response.data);
-                // Log the data received from the API call
-                const wishlistItems = response.data.data;
-                wishlistItems.forEach(item => {
-                    console.log('Product Title:', item.title);
-                    console.log('Price:', item.price);
-                    console.log('Photo:', item.photo);
-                    // Log other properties as needed
-                });
-            })
-            .catch(error => {
-                console.error('Error retrieving wishlist items:', error);
-                toast.error(error.message); // Pass only the error message to toast.error
-            });
+            data : data
+          };
+          
+          axios.request(config)
+          .then((response) => {
+            console.log(JSON.stringify(response.data));
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+          
+
+        // axios.post('https://fruitsbazarapis.onrender.com/api/getCart',{ user_id: userid}, {
+        //     headers: {
+        //         'Authorization': `Bearer ${token}`
+        //     },
+        // })
+        //     .then(response => {
+        //         console.log('Wishlist items retrieved successfully:', response.data);
+        //         // Log the data received from the API call
+        //         const wishlistItems = response.data.data;
+        //         wishlistItems.forEach(item => {
+        //             console.log('Product Title:', item.title);
+        //             console.log('Price:', item.price);
+        //             console.log('Photo:', item.photo);
+        //             // Log other properties as needed
+        //         });
+        //     })
+        //     .catch(error => {
+        //         console.error('Error retrieving wishlist items:', error);
+        //         toast.error(error.message); // Pass only the error message to toast.error
+        //     });
     }, []);
 
 
