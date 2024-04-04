@@ -11,6 +11,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../actions/cartActions';
+import AddProductWishlistBtn from '../wishlist/addProductWishlist';
 const Product = () => {
     const dispatch = useDispatch();
     const [products, setProducts] = useState([]);
@@ -45,7 +46,7 @@ const Product = () => {
     const navigate = useNavigate();
     const handleViewProductPage = (pname, pid) => {
         if (pid != null) {
-            navigate(`/productdetails`,{state:{pname:pname,pid:pid}});
+            navigate(`/productdetails`, { state: { pname: pname, pid: pid } });
         } else {
             alert("Product id not get")
         }
@@ -62,7 +63,7 @@ const Product = () => {
     return (
         <>
             <div className='flex flex-col'>
-                <Header />
+                {/* <Header /> */}
 
                 <div className='flex flex-row pt-[2rem] px-[2rem]'>
                     <div onClick={handleFilter} className={`cursor-pointer ml-[10px] py-[6px] px-5 flex border-[#3d3839] border-[1px] text-[#3d3839]  border-solid hover:bg-[#3d3839] hover:text-[#fff] ${filterDiv === true ? "bg-[#3d3839] text-[#fff]" : "bg-[#fff]"}`}>
@@ -111,11 +112,7 @@ const Product = () => {
                                                     <AddShoppingCartRoundedIcon className='hover:text-[#fff] !text-[20px]' />
                                                 </span>
                                             </Tooltip>
-                                            <Tooltip title="Add to wishlist" arrow placement="top">
-                                                <span className='bg-[#fff] box-color rounded-full hover:bg-[#0bc217] p-[0.60rem] flex justify-center'>
-                                                    <FavoriteBorderRoundedIcon className='hover:text-[#fff] !text-[20px]' />
-                                                </span>
-                                            </Tooltip>
+                                            <AddProductWishlistBtn productID={product._id} />
                                         </div>
                                     </div>
                                     <h4 onClick={() => handleViewProductPage(product.title, product._id)} className="des-font hover:text-[#0bc217]">

@@ -14,6 +14,8 @@ import TextField from '@mui/material/TextField';
 import { useNavigate } from "react-router-dom";
 import Drawer from 'react-modern-drawer';
 import 'react-modern-drawer/dist/index.css';
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 
 const style = {
@@ -27,7 +29,9 @@ const style = {
 };
 const Header = () => {
     const navigate = useNavigate();
-    const [open, setOpen] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const openMenu = Boolean(anchorEl);
+    const [openModel, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const cartItems = useSelector(state => state.cart.cartItems);
@@ -35,52 +39,45 @@ const Header = () => {
     const [search, setSearch] = React.useState('');
     const [searchResults, setSearchResults] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
-    const [searching,setsearching]=useState(false);
     let timeout;
-    useEffect(()=>{
-       return ()=>{
-        setsearching(false);
+    useEffect(() => {
+        return () => {
+            clearTimeout(timeout);
+        }
+    }, [])
+
+    const debounce = useCallback((fun, time) => {
         clearTimeout(timeout);
-       } 
-    },[])
-
-   const debounce=useCallback((fun,time)=>{
-    clearTimeout(timeout);
-    timeout= setTimeout(() => {
-        fun()
-    }, time);
-   },[]) 
-
+        timeout = setTimeout(() => {
+            fun()
+        }, time);
+    }, [])
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    };
+    const handleClickTo_OpenMenu = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
     const handleSerachChange = (event) => {
         setSearch(event.target.value);
-        if (search?.length>0) {
-            debounce(()=>{console.log("searching");setsearching(true)},400)
+        if (search?.length >= 4) {
+            debounce(async () => {
+                console.log("searching");
+                try {
+                    setIsLoading(true);
+                    const response = await axios.get(`https://fruitsbazarapis.onrender.com/api/getProducts=${search}`);
+                    setSearchResults(response.data);
+                    setIsLoading(false);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    setIsLoading(false);
+                }
+            }, 400)
         } else {
             setSearchResults([]);
         }
     };
 
-    const fetchData = async () => {
-        try {
-            setIsLoading(true);
-            if (search?.length >= 4) {
-                const response = await axios.get(`https://fruitsbazarapis.onrender.com/api/getProducts=${search}`);
-                setSearchResults(response.data);
-            } else {
-                setSearchResults([]);
-            }
-            setIsLoading(false);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if(searching){
-            fetchData();
-        }
-    }, [search,searching]);
     const handleClickHome = () => {
         navigate('/');
     };
@@ -88,12 +85,17 @@ const Header = () => {
         navigate('/product');
     };
 
+    const handleOpenRegisterPage = () => {
+        navigate('/register-page');
+    };
     const statusClick = () => {
         setOpen(false);
     }
-    const handleCartpage = (type) => {
-        if(type){ return navigate('/cart',{state:{type:"wish"}});}
-        else {return navigate('/cart');}
+    const handleCartpage = () => {
+        navigate('/cart');
+    }
+    const handleWishlistPage = () => {
+        navigate('/wishlist');
     }
 
     const toggleDrawer = () => {
@@ -101,7 +103,7 @@ const Header = () => {
     }
     const handleViewProductPage = (pname, pid) => {
         if (pid != null) {
-            navigate(`/productdetails`,{state:{pname:pname,pid:pid}});
+            navigate(`/productdetails`, { state: { pname: pname, pid: pid } });
         } else {
             alert("Product id not get")
         }
@@ -125,20 +127,62 @@ const Header = () => {
                 </div>
                 <div className='flex flex-row items-center gap-[5px] text-[#4a4844]'>
                     <SearchRoundedIcon onClick={toggleDrawer} className='!text-[30px]  mx-[6px] cursor-pointer' />
-                    <FavoriteBorderOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={()=>{handleCartpage("wish")}} />
-                    <div className='relative'><LocalMallOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={()=>{handleCartpage()}} />
+                    <FavoriteBorderOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={() => { handleWishlistPage() }} />
+                    <div className='relative'><LocalMallOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={() => { handleCartpage() }} />
                         {cartItems.length > 0 ? <div className='w-[14px] h-[14px] bg-[#0bc217] text-[#fff] absolute right-0 rounded-full bottom-0 flex items-center justify-center text-[10px] front-[500]'>{cartItems.length}</div> : ``}
                     </div>
-                    <PermIdentityOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={handleOpen} />
+                    <PermIdentityOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={handleClickTo_OpenMenu} />
                 </div>
             </div>
+            {/* login menu start */}
+            <Menu
+                id="account-menu"
+                anchorEl={anchorEl}
+                open={openMenu}
+                onClose={handleCloseMenu}
+                PaperProps={{
+                    elevation: 0,
+                    sx: {
+                        overflow: 'visible',
+                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                        mt: 3,
+                        ml: -4,
+                        '& .MuiAvatar-root': {
+                            width: 32,
+                            height: 32,
+                            ml: -0.5,
+                            mr: 8,
+                        },
+                        '&:before': {
+                            content: '""',
+                            display: 'block',
+                            position: 'absolute',
+                            top: 0,
+                            right: 14,
+                            width: 10,
+                            height: 10,
+                            bgcolor: 'background.paper',
+                            transform: 'translateY(-50%) rotate(45deg)',
+                            zIndex: 0,
+                        },
+                    },
+                }}
+                MenuListProps={{
+                    "aria-labelledby": "account-menu"
+                }}
+            >
+                <MenuItem onClick={handleOpen}>Login</MenuItem>
+                <MenuItem onClick={handleOpenRegisterPage}>Register</MenuItem>
+                <MenuItem >Logout</MenuItem>
+            </Menu>
+            {/* login menu end */}
             {/* login model */}
             <Modal
-                open={open}
+                open={openModel}
                 onClose={handleClose}
             >
                 <div className='noFocusOutline' style={style}>
-                    <LoginPage statusClick={statusClick} />
+                    <LoginPage statusClick={statusClick} handleClose={handleClose} />
                     <div className='closebtn cursor-pointer' onClick={handleClose}><CloseRoundedIcon /></div>
                 </div>
             </Modal>
