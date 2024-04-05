@@ -39,8 +39,11 @@ const LoginPage = (props) => {
                         toast.success(response.data.message);
                         localStorage.setItem('token', response.data.meta?.token);
                         setToken(token);
+                        // console.log("response.data.data._id", response.data.data._id)
                         setUserId(response.data.data._id);
-                        localStorage.setItem('userID', userId);
+                        if (response.data.data._id) {
+                            localStorage.setItem('userID', response.data.data._id);
+                        }
                     } else if (response.data.ok === false) {
                         toast.error(response.data.message);
                     }

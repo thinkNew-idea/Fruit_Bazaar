@@ -10,30 +10,30 @@ const Wishlistpage = () => {
     React.useEffect(() => {
         const token = localStorage.getItem('token');
         const userid = localStorage.getItem('userID');
-        console.log(token);
+        console.log("token", token);
         console.log(userid);
         let data = JSON.stringify({
-            "user_id":userid
-          });
-          
-          let config = {
+            "user_id": userid
+        });
+
+        let config = {
             method: 'post',
             url: 'https://fruitsbazarapis.onrender.com/api/getCart',
-            headers: { 
-              'Content-Type': 'application/json', 
-              'Authorization': `Bearer ${token}`
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
-            data : data
-          };
-          
-          axios.request(config)
-          .then((response) => {
-            console.log(JSON.stringify(response.data));
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-          
+            data: data
+        };
+
+        axios.request(config)
+            .then((response) => {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
 
         // axios.post('https://fruitsbazarapis.onrender.com/api/getCart',{ user_id: userid}, {
         //     headers: {
