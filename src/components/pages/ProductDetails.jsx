@@ -25,7 +25,7 @@ const ProductDetails = () => {
     useEffect(() => {
         // const params = new URLSearchParams(window?.location?.search);
         // const pidFromUrl = params.get('variant');
-
+        console.log("loction", location.state);
         if (location?.state?.pid) {
             setPid(location?.state?.pid);
         }
@@ -40,7 +40,7 @@ const ProductDetails = () => {
                     console.error('Error:', error);
                 });
         }
-    }, [pid]);
+    }, [pid, location]);
 
     const handleqtyValue = (event) => {
         if (event.target.value === 0) {
