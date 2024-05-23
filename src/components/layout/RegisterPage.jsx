@@ -104,9 +104,9 @@ const RegisterPage = () => {
         <div className='pt-[2rem] px-[2rem] gap-4 flex flex-col'>
             <div className='flex justify-center relative mb-3'><h1 className='text-[#3d3839] text-[36px] font-[500]'>Register Your Details</h1>
             </div>
-            <div class="grid grid-cols-2 gap-4 flex-1 custom-shadow p-[4rem] relative">
+            <div class="grid grid-cols-2 gap-4 flex-1 custom-shadow p-[4rem] relative max-[950px]:flex max-[950px]:flex-col max-[950px]:p-[1em]">
                 <div className='flex flex-col'>
-                    <div className='flex flex-row  items-center gap-2 justify-between'>
+                    <div className='flex flex-row  items-center gap-2 justify-between max-[381px]:flex-col'>
                         <TextField
                             fullWidth
                             label="Enter Gmail"
@@ -132,6 +132,7 @@ const RegisterPage = () => {
                             size="normal"
                             variant="contained"
                             onClick={handleSendOtp}
+                            className='max-[381px]:!w-[100%]'
                         >
                             Send Otp
                         </Button>
@@ -229,7 +230,7 @@ const RegisterPage = () => {
                     value={addressTwo}
                     onChange={handleAddressTwo}
                 />
-                <div className='absolute bottom-[-10rem] left-0 z-[10]'><img className='w-[374px]' src={fruitimg} alt="" /></div>
+                <div className='absolute bottom-[-10rem] left-0 z-[10] max-[950px]:z-[0]'><img className='w-[374px]' src={fruitimg} alt="" /></div>
 
             </div>
             <div className='flex justify-end '>
