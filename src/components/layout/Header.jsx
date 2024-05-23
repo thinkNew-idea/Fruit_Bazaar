@@ -9,6 +9,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import logo from '../media/assets/icon/logo-no-background.png';
 import Modal from '@mui/material/Modal';
 import LoginPage from './LoginPage';
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import TextField from '@mui/material/TextField';
 import { useNavigate } from "react-router-dom";
@@ -35,7 +36,8 @@ const Header = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const cartItems = useSelector(state => state.cart.cartItems);
-    const [isOpen, setIsOpen] = React.useState(false)
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [handleMobMenu, setHandleMobMenu] = React.useState(false);
     const [search, setSearch] = React.useState('');
     const [searchResults, setSearchResults] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -108,13 +110,18 @@ const Header = () => {
             alert("Product id not get")
         }
     }
+
+    const handleOpenMob_menu = () => {
+        setHandleMobMenu((prevState) => !prevState)
+    }
     return (
         <>
             <div className='flex flex-row justify-between bg-[#fff] text-[#4a4844] border-solid border-b' id='header'>
-                <div className='font-[500]  w-[13rem] cursor-pointer' onClick={handleClickHome}>
+                <div className='flex flex-row items-center gap-[5px] text-[#4a4844] min-[950px]:!hidden' onClick={handleOpenMob_menu}><MenuRoundedIcon /></div>
+                <div className='font-[500]  w-[13rem] cursor-pointer max-[950px]:!w-[10rem]' onClick={handleClickHome}>
                     <img src={logo} alt="logo" />
                 </div>
-                <div className='font-[600] uppercase text-[1rem] flex flex-row items-center'>
+                <div className='font-[600] uppercase text-[1rem] flex flex-row items-center max-[950px]:hidden' >
                     <span className='p-1 mx-[18px] cursor-pointer hover:text-[#0bc217]' onClick={handleClickHome}>
                         Home
                     </span>
@@ -125,13 +132,13 @@ const Header = () => {
                         Blogs
                     </span>
                 </div>
-                <div className='flex flex-row items-center gap-[5px] text-[#4a4844]'>
+                <div className='flex flex-row items-center gap-[5px] text-[#4a4844] max-[950px]:gap-[0px]'>
                     <SearchRoundedIcon onClick={toggleDrawer} className='!text-[30px]  mx-[6px] cursor-pointer' />
-                    <FavoriteBorderOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={() => { handleWishlistPage() }} />
-                    <div className='relative'><LocalMallOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={() => { handleCartpage() }} />
-                        {cartItems.length > 0 ? <div className='w-[14px] h-[14px] bg-[#0bc217] text-[#fff] absolute right-0 rounded-full bottom-0 flex items-center justify-center text-[10px] front-[500]'>{cartItems.length}</div> : ``}
+                    <FavoriteBorderOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer max-[950px]:!hidden' onClick={() => { handleWishlistPage() }} />
+                    <div className='relative'><LocalMallOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer max-[950px]:!hidden' onClick={() => { handleCartpage() }} />
+                        {cartItems.length > 0 ? <div className='w-[14px] h-[14px] bg-[#0bc217] text-[#fff] absolute right-0 rounded-full bottom-0 flex items-center justify-center text-[10px] front-[500] max-[950px]:!hidden'>{cartItems.length}</div> : ``}
                     </div>
-                    <PermIdentityOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer' onClick={handleClickTo_OpenMenu} />
+                    <PermIdentityOutlinedIcon className='!text-[30px]  mx-[6px] cursor-pointer max-[950px]:!hidden' onClick={handleClickTo_OpenMenu} />
                 </div>
             </div>
             {/* login menu start */}
@@ -191,8 +198,7 @@ const Header = () => {
                 onClose={toggleDrawer}
                 direction='left'
                 zIndex={9999}
-                size={"30%"}
-                className='p-[15px] rounded-0'
+                className='p-[15px] rounded-0 drawer-coustom'
             >
                 <div className='closebtn cursor-pointer' onClick={toggleDrawer}><CloseRoundedIcon /></div>
                 <TextField
@@ -226,7 +232,24 @@ const Header = () => {
                 )}
                 {search?.length < 4 && <div>You must enter at least 4 characters.</div>}
             </Drawer>
+            <Drawer
+                open={handleMobMenu}
+                onClose={handleOpenMob_menu}
+                direction='left'
+                zIndex={9999}
+                className='rounded-0 !w-[340px]'
+            >
+                <div className='w-full h-full flex flex-col justify-between'>
+                    <div>
+                        <div>working on</div>
+                    </div>
 
+                    <div className='cursor-pointer flex justify-center items-center bg-[#0bc217] text-[#fff] p-3' onClick={handleOpenMob_menu}><CloseRoundedIcon className='!text-[19px] mr-2' /> CLOSE</div>
+
+                </div>
+
+
+            </Drawer>
         </>
     )
 }

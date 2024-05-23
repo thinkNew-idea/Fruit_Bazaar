@@ -107,8 +107,8 @@ const ProductDetails = () => {
     return (
         <div className='flex flex-col'>
             {/* <Header /> */}
-            <div className='flex flex-row w-full gap-5 py-[2rem] px-[2rem]'>
-                <div className='w-[35%]'>
+            <div className='flex flex-row w-full gap-5 py-[2rem] px-[2rem] max-[950px]:flex-col'>
+                <div className='w-[35%] max-[950px]:w-[100%]'>
                     {product_details ? (
                         <div className='border border-solid border-[#ececec] min-h-[100%] flex justify-between'>
                             <img className='w-full' src={product_details?.photos} style={{ objectFit: "contain" }} />                        </div>
@@ -117,8 +117,8 @@ const ProductDetails = () => {
 
                     )}
                 </div>
-                <div className='w-[65%] gap-5 flex flex-row'>
-                    <div className='w-[60%] flex flex-col justify-between'>
+                <div className='w-[65%] max-[950px]:w-[100%] gap-5 flex flex-row max-[950px]:flex-col'>
+                    <div className='w-[60%] max-[950px]:w-[100%] flex flex-col justify-between'>
                         {product_details ? (
 
                             <div>
@@ -149,7 +149,7 @@ const ProductDetails = () => {
                                             {['1KG', '2KG', '3KG'].map((kgvlue, index) => <li onClick={() => kg_button(kgvlue)} className='border border-[2px] text-[14px] p-[10px] hover:bg-[#3d3839] hover:text-[#fff]' value={kgvlue} key={index}>{kgvlue}</li>)}
                                         </ul>
                                     </div>
-                                    <div className='flex gap-4 w-full'>
+                                    <div className='flex gap-4 w-full addtocart_btn_mob'>
                                         <div className='flex border border-[2px] border-[#3d3839] w-[90px] relative'>
                                             <input readOnly className='qtyvalue' type='text' onChange={handleqtyValue} value={currentQtyValue.toString()} />
                                             <div className='flex flex-col'>
@@ -193,7 +193,7 @@ const ProductDetails = () => {
                                             )}
                                         </div>
                                     </div>
-                                    <div className='mt-4'>
+                                    <div className='mt-4 buy_it_now_mob'>
                                         <Button
                                             style={{
                                                 width: '100%',
@@ -213,7 +213,7 @@ const ProductDetails = () => {
                             )}
                         </div>
                     </div>
-                    <div className='w-[40%]'>
+                    <div className='w-[40%] max-[950px]:w-[100%]  max-[950px]:mb-[7em]'>
                         <div className='flex flex-col gap-5'>
                             <div className='content_box'>
                                 <div className='content_text'>
